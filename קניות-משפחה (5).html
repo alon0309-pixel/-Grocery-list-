@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#4F7FFF"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="קניות משפחה"/>
+<title>🛒 קניות משפחה</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--blue:#4F7FFF;--blue-l:#EEF3FF;--green:#22C55E;--green-l:#F0FDF4;--green-d:#15803D;--red:#EF4444;--red-l:#FEF2F2;--g0:#fff;--g1:#F8F9FA;--g2:#F1F3F5;--g3:#E9ECEF;--g4:#DEE2E6;--g6:#ADB5BD;--g7:#6C757D;--g8:#495057;--g9:#212529;--r:12px}
+html,body{height:100%;overflow:hidden;background:var(--g1)}
+body{font-family:'Heebo',sans-serif;color:var(--g9)}
+.app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;background:var(--g0)}
+.header{background:var(--g0);border-bottom:1px solid var(--g3);padding:12px 16px 0;flex-shrink:0}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.app-title{font-size:20px;font-weight:700}
+.hbtns{display:flex;gap:8px}
+.ibtn{width:38px;height:38px;border-radius:10px;border:1.5px solid var(--g4);background:var(--g0);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ibtn:active{background:var(--g2);transform:scale(0.95)}
+.tabs{display:flex}
+.tab{flex:1;padding:10px 0 11px;font-size:13px;font-weight:500;color:var(--g6);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:'Heebo',sans-serif}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px}
+.search-row{display:flex;gap:8px;margin-bottom:10px}
+.sinput{flex:1;height:42px;border:1.5px solid var(--g4);border-radius:10px;padding:0 14px;font-size:15px;background:var(--g1);font-family:'Heebo',sans-serif;color:var(--g9);outline:none}
+.sinput:focus{border-color:var(--blue);background:var(--g0)}
+.micbtn{width:42px;height:42px;border-radius:10px;border:1.5px solid var(--g4);background:var(--g1);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s}
+.micbtn.on{border-color:var(--red);background:var(--red-l);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.3)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
+.miclabel{text-align:center;font-size:12px;color:var(--red);height:16px;margin-bottom:6px}
+.chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{padding:6px 14px;border-radius:100px;font-size:12px;border:1.5px solid var(--g4);background:var(--g0);color:var(--g7);cursor:pointer;white-space:nowrap;font-family:'Heebo',sans-serif}
+.chip.active{background:var(--blue-l);border-color:var(--blue);color:var(--blue)}
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.pcard{background:var(--g1);border:1.5px solid var(--g3);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all 0.15s;display:flex;align-items:flex-start;gap:8px}
+.pcard:active{transform:scale(0.97)}
+.pcard.inlist{background:var(--green-l);border-color:var(--green)}
+.pemoji{font-size:22px;flex-shrink:0;margin-top:2px}
+.pinfo{flex:1;min-width:0}
+.pname{font-size:13px;font-weight:600;color:var(--g9)}
+.pdetail{font-size:11px;color:var(--g7);margin-top:2px;line-height:1.4}
+.pcat{font-size:10px;color:var(--g6);margin-top:1px}
+.paddicon{margin-right:auto;font-size:16px;flex-shrink:0}
+.slabel{font-size:13px;font-weight:500;color:var(--g6);margin:4px 0 10px}
+.ilist{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.litem{background:var(--g0);border:1.5px solid var(--g3);border-radius:var(--r);padding:10px 14px;display:flex;align-items:center;gap:10px;transition:all 0.2s}
+.litem.chk{opacity:0.4}
+.cbtn{width:26px;height:26px;border-radius:50%;border:2px solid var(--g4);background:var(--g0);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.cbtn.done{background:var(--green);border-color:var(--green);color:white}
+.iemoji{font-size:20px;flex-shrink:0}
+.ibody{flex:1;min-width:0}
+.iname{font-size:14px;font-weight:600;color:var(--g9)}
+.idetail{font-size:11px;color:var(--g7);margin-top:1px}
+.qrow{display:flex;align-items:center;gap:8px;margin-top:4px}
+.qbtn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--g4);background:var(--g1);color:var(--g8);font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.qbtn:active{background:var(--g3);transform:scale(0.9)}
+.qnum{font-size:13px;font-weight:500;min-width:20px;text-align:center}
+.delbtn{background:none;border:none;color:var(--g4);font-size:18px;cursor:pointer;padding:4px}
+.delbtn:active{color:var(--red)}
+.empty{text-align:center;padding:60px 20px;color:var(--g6)}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.add-bar{display:flex;gap:8px;padding:12px 16px;background:var(--g0);border-top:1px solid var(--g3);flex-shrink:0;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+.ainput{flex:1;height:44px;border:1.5px solid var(--g4);border-radius:10px;padding:0 14px;font-size:15px;font-family:'Heebo',sans-serif;background:var(--g1);color:var(--g9);outline:none}
+.ainput:focus{border-color:var(--blue);background:var(--g0)}
+.amicbtn{width:44px;height:44px;border-radius:10px;border:1.5px solid var(--g4);background:var(--g1);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.amicbtn.on{border-color:var(--red);background:var(--red-l);animation:pulse 1s infinite}
+.abtn{height:44px;padding:0 18px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap}
+.abtn:active{transform:scale(0.97)}
+/* VARIANT MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:flex-end}
+.sheet{background:var(--g0);border-radius:20px 20px 0 0;padding:20px 16px max(20px,env(safe-area-inset-bottom));width:100%;max-height:80vh;overflow-y:auto}
+.sheet-handle{width:36px;height:4px;background:var(--g4);border-radius:2px;margin:0 auto 16px}
+.sheet-title{font-size:17px;font-weight:700;margin-bottom:4px}
+.sheet-sub{font-size:13px;color:var(--g6);margin-bottom:16px}
+.vlist{display:flex;flex-direction:column;gap:8px}
+.vitem{background:var(--g1);border:1.5px solid var(--g3);border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:12px}
+.vitem:active{background:var(--blue-l);border-color:var(--blue)}
+.vemoji{font-size:22px}
+.vinfo{flex:1}
+.vname{font-size:14px;font-weight:600}
+.vdetail{font-size:12px;color:var(--g7);margin-top:2px}
+.vprice{font-size:12px;color:var(--g7);text-align:left;white-space:nowrap}
+.closebtn{width:100%;margin-top:12px;padding:14px;border:1.5px solid var(--g4);border-radius:10px;background:var(--g0);font-size:15px;color:var(--g7);cursor:pointer;font-family:'Heebo',sans-serif}
+/* PRICES */
+.saving-card{background:var(--green-l);border:1.5px solid #86EFAC;border-radius:var(--r);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.sicon{font-size:32px}
+.slbl{font-size:13px;color:var(--green-d)}
+.samt{font-size:24px;font-weight:700;color:var(--green-d)}
+.sdesc{font-size:12px;color:var(--green-d)}
+.storelist{display:flex;flex-direction:column;gap:8px}
+.stcard{background:var(--g0);border:1.5px solid var(--g3);border-radius:var(--r);overflow:hidden}
+.stcard.best{border-color:var(--blue)}
+.sthead{padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.stdot{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.stinfo{flex:1}
+.stname{font-size:15px;font-weight:600}
+.stsub{font-size:12px;color:var(--g6);margin-top:2px}
+.stprice{text-align:left}
+.sttotal{font-size:20px;font-weight:700}
+.besttag{display:inline-block;background:var(--blue-l);color:var(--blue);font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;margin-top:2px}
+.strows{border-top:1px solid var(--g3)}
+.strow{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;border-bottom:1px solid var(--g3);font-size:13px}
+.strow:last-child{border-bottom:none}
+.rowitem{color:var(--g7)}
+.rowprice{font-weight:600}
+.rowna{color:var(--g6);font-size:12px}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(33,37,41,0.92);color:white;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;white-space:nowrap;z-index:999;opacity:0;transition:opacity 0.25s;pointer-events:none}
+.toast.show{opacity:1}
+.nonelist{text-align:center;padding:60px 20px;color:var(--g6)}
+/* share */
+.sopts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.sopt{background:var(--g1);border:1.5px solid var(--g3);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer}
+.sopt:active{background:var(--g2);transform:scale(0.97)}
+.sopticon{font-size:26px;margin-bottom:6px}
+.soptlbl{font-size:13px;color:var(--g7);font-weight:500}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-top">
+      <div class="app-title">🛒 קניות משפחה</div>
+      <div class="hbtns">
+        <button class="ibtn" onclick="openShare()">📤</button>
+        <button class="ibtn" onclick="clearDone()">✅</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('list',this)">הרשימה</button>
+      <button class="tab" onclick="switchTab('catalog',this)">קטלוג</button>
+      <button class="tab" onclick="switchTab('prices',this)">מחירים</button>
+    </div>
+  </div>
+  <div class="content" id="content"></div>
+  <div class="add-bar" id="addBar">
+    <input class="ainput" id="addInput" placeholder="הוסף מוצר..." dir="rtl" autocomplete="off"/>
+    <button class="amicbtn" id="addMic" onclick="startMic('add')">🎙️</button>
+    <button class="abtn" onclick="doAdd()">הוסף</button>
+  </div>
+</div>
+
+<!-- Variant picker -->
+<div class="overlay" id="varOverlay" style="display:none" onclick="closeVar(event)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="varTitle"></div>
+    <div class="sheet-sub">בחר סוג / גודל</div>
+    <div class="vlist" id="varList"></div>
+    <button class="closebtn" onclick="closeVarBtn()">ביטול</button>
+  </div>
+</div>
+
+<!-- Share sheet -->
+<div class="overlay" id="shareOverlay" style="display:none" onclick="closeShareEv(event)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">שיתוף הרשימה</div>
+    <div class="sheet-sub">שתף עם בני המשפחה</div>
+    <div class="sopts">
+      <div class="sopt" onclick="doShare('whatsapp')"><div class="sopticon">💬</div><div class="soptlbl">WhatsApp</div></div>
+      <div class="sopt" onclick="doShare('copy')"><div class="sopticon">📋</div><div class="soptlbl">העתק רשימה</div></div>
+      <div class="sopt" onclick="doShare('native')"><div class="sopticon">📤</div><div class="soptlbl">שתף</div></div>
+      <div class="sopt" onclick="doShare('sms')"><div class="sopticon">💌</div><div class="soptlbl">SMS</div></div>
+    </div>
+    <button class="closebtn" onclick="closeShare()">סגור</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== PRODUCT DATABASE WITH VARIANTS =====
+const PRODUCTS = [
+  // ===== חלב ומוצרי חלב =====
+  {id:1,name:'חלב',emoji:'🥛',cat:'חלב',variants:[
+    {v:'חלב 1% 1 ל — תנובה',w:'1 ל',note:'דל שומן',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'חלב 3% 1 ל — תנובה',w:'1 ל',note:'רגיל',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+    {v:'חלב 3% 2 ל — תנובה',w:'2 ל',note:'כלכלי',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.0,yeinot:11.8}},
+    {v:'חלב 1% 1 ל — טרה',w:'1 ל',note:'דל שומן',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'חלב 3% 1 ל — טרה',w:'1 ל',note:'רגיל',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+    {v:'חלב 5% 1 ל — תנובה',w:'1 ל',note:'עשיר',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.0,yeinot:7.8}},
+  ]},
+  {id:2,name:'ביצים',emoji:'🥚',cat:'חלב',variants:[
+    {v:'ביצים L 6 יח׳',w:'6 יח׳',note:'גדולות',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.0,yeinot:8.8}},
+    {v:'ביצים L 12 יח׳',w:'12 יח׳',note:'גדולות',prices:{hazi:15.9,osher:16.5,yesh:15.5,shufersal:16.0,yeinot:15.8}},
+    {v:'ביצים XL 12 יח׳',w:'12 יח׳',note:'ענקיות',prices:{hazi:17.9,osher:18.5,yesh:17.5,shufersal:18.0,yeinot:17.8}},
+    {v:'ביצים חופש 6 יח׳',w:'6 יח׳',note:'כלוב חופשי',prices:{hazi:14.9,osher:15.5,yesh:14.5,shufersal:15.0,yeinot:14.8}},
+    {v:'ביצים חופש 12 יח׳',w:'12 יח׳',note:'כלוב חופשי',prices:{hazi:26.9,osher:27.5,yesh:25.9,shufersal:28.0,yeinot:26.5}},
+  ]},
+  {id:3,name:'גבינה צהובה',emoji:'🧀',cat:'חלב',variants:[
+    {v:'עמק פרוסה 200 גר — תנובה',w:'200 גר',note:'הכי נמכרת',prices:{hazi:14.9,osher:15.5,yesh:14.5,shufersal:15.9,yeinot:15.0}},
+    {v:'עמק גוש 400 גר — תנובה',w:'400 גר',note:'כלכלי',prices:{hazi:24.9,osher:25.9,yesh:23.9,shufersal:26.5,yeinot:25.0}},
+    {v:'עמק מגוררת 200 גר — תנובה',w:'200 גר',note:'לפיצה ופסטה',prices:{hazi:13.9,osher:14.5,yesh:13.5,shufersal:14.9,yeinot:14.0}},
+    {v:'גד גאודה פרוסה 200 גר — טרה',w:'200 גר',note:'עדין',prices:{hazi:13.9,osher:14.5,yesh:13.5,shufersal:14.9,yeinot:14.0}},
+    {v:'גד אמנטל פרוסה 200 גר — טרה',w:'200 גר',note:'מתוק',prices:{hazi:15.9,osher:16.5,yesh:15.5,shufersal:16.9,yeinot:16.0}},
+    {v:'גד מגוררת 200 גר — טרה',w:'200 גר',note:'לפיצה',prices:{hazi:13.9,osher:14.5,yesh:13.5,shufersal:14.9,yeinot:14.0}},
+    {v:'צ׳דר פרוסה 200 גר — תנובה',w:'200 גר',note:'חריף',prices:{hazi:15.9,osher:16.5,yesh:15.5,shufersal:16.9,yeinot:16.0}},
+    {v:'גבינה 28% דלת שומן 200 גר',w:'200 גר',note:'דיאט',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+  ]},
+  {id:4,name:'גבינה לבנה',emoji:'🫙',cat:'חלב',variants:[
+    {v:'גבינה לבנה 5% 250 גר — תנובה',w:'250 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'גבינה לבנה 9% 250 גר — תנובה',w:'250 גר',note:'עשירה',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+    {v:'גבינה לבנה 5% 500 גר — תנובה',w:'500 גר',note:'כלכלי',prices:{hazi:10.9,osher:11.5,yesh:10.5,shufersal:11.0,yeinot:10.8}},
+    {v:'גבינה לבנה 5% 250 גר — טרה',w:'250 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'גבינה לבנה 9% 250 גר — טרה',w:'250 גר',note:'עשירה',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+  ]},
+  {id:5,name:'גבינת שמנת',emoji:'🧀',cat:'חלב',variants:[
+    {v:'פילדלפיה 150 גר — קרפט',w:'150 גר',note:'המקורית',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.9,yeinot:12.0}},
+    {v:'פילדלפיה לייט 150 גר',w:'150 גר',note:'דלת שומן',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.9,yeinot:12.0}},
+    {v:'גבינת שמנת 30% 200 גר — תנובה',w:'200 גר',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'גבינת שמנת 30% 200 גר — טרה',w:'200 גר',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+  ]},
+  {id:6,name:'גבינה בולגרית',emoji:'🧀',cat:'חלב',variants:[
+    {v:'בולגרית 5% 200 גר — תנובה',w:'200 גר',note:'מלוחה קלאסית',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'בולגרית 16% 200 גר — תנובה',w:'200 גר',note:'עשירה',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'בולגרית 5% 200 גר — טרה',w:'200 גר',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+  ]},
+  {id:7,name:'גבינה צפתית',emoji:'🧀',cat:'חלב',variants:[
+    {v:'צפתית 5% 200 גר — תנובה',w:'200 גר',note:'מלוחה',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'צפתית 16% 200 גר — תנובה',w:'200 גר',note:'עשירה',prices:{hazi:10.9,osher:11.5,yesh:10.5,shufersal:11.5,yeinot:11.0}},
+  ]},
+  {id:8,name:'קוטג׳',emoji:'🥛',cat:'חלב',variants:[
+    {v:'קוטג׳ 3% 250 גר — תנובה',w:'250 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'קוטג׳ 3% 500 גר — תנובה',w:'500 גר',note:'משפחתי',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.0,yeinot:9.8}},
+    {v:'קוטג׳ 250 גר — טרה',w:'250 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'קוטג׳ 9% 250 גר — תנובה',w:'250 גר',note:'עשיר',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+  ]},
+  {id:9,name:'יוגורט',emoji:'🥣',cat:'חלב',variants:[
+    {v:'יוגורט 3% 150 גר — תנובה',w:'150 גר',note:'אישי',prices:{hazi:2.9,osher:3.2,yesh:2.8,shufersal:3.0,yeinot:2.9}},
+    {v:'יוגורט 3% 500 גר — תנובה',w:'500 גר',note:'משפחתי',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+    {v:'יוגורט יווני 150 גר — דנונה',w:'150 גר',note:'סמיך',prices:{hazi:4.9,osher:5.2,yesh:4.8,shufersal:5.0,yeinot:4.9}},
+    {v:'יוגורט פירות 150 גר',w:'150 גר',note:'לילדים',prices:{hazi:3.9,osher:4.2,yesh:3.8,shufersal:4.0,yeinot:3.9}},
+  ]},
+  {id:10,name:'חמאה',emoji:'🧈',cat:'חלב',variants:[
+    {v:'חמאה 100 גר — תנובה',w:'100 גר',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.0,yeinot:8.8}},
+    {v:'חמאה 200 גר — תנובה',w:'200 גר',note:'',prices:{hazi:14.9,osher:15.5,yesh:14.5,shufersal:15.0,yeinot:14.8}},
+    {v:'חמאה מלוחה 200 גר — תנובה',w:'200 גר',note:'מלוחה',prices:{hazi:15.9,osher:16.5,yesh:15.5,shufersal:16.0,yeinot:15.8}},
+    {v:'מרגרינה 250 גר — ברמן',w:'250 גר',note:'לאפייה',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.0,yeinot:9.8}},
+  ]},
+  {id:11,name:'שמנת',emoji:'🥛',cat:'חלב',variants:[
+    {v:'שמנת בישול 15% 200 מ"ל — תנובה',w:'200 מ"ל',note:'לבישול',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+    {v:'שמנת חמוצה 15% 200 מ"ל',w:'200 מ"ל',note:'',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+    {v:'שמנת להקצפה 38% 250 מ"ל',w:'250 מ"ל',note:'לקינוחים',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.0,yeinot:9.8}},
+  ]},
+  // ===== לחם ואפייה =====
+  {id:12,name:'לחם',emoji:'🍞',cat:'אפייה',variants:[
+    {v:'לחם אחיד פרוס — אנגל',w:'750 גר',note:'לבן קלאסי',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'לחם שיפון פרוס — אנגל',w:'500 גר',note:'כהה',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.0,yeinot:7.8}},
+    {v:'לחם מלא פרוס — ברמן',w:'500 גר',note:'בריאות',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.0,yeinot:9.8}},
+    {v:'לחם כוסמין פרוס',w:'500 גר',note:'בריאות',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.0,yeinot:11.8}},
+    {v:'לחם ללא גלוטן',w:'400 גר',note:'ללא גלוטן',prices:{hazi:19.9,osher:20.5,yesh:18.9,shufersal:21.0,yeinot:20.0}},
+  ]},
+  {id:13,name:'פיתות',emoji:'🫓',cat:'אפייה',variants:[
+    {v:'פיתות לבנות 6 יח׳ — אנגל',w:'6 יח׳',note:'רגילות',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'פיתות כוסמין 6 יח׳',w:'6 יח׳',note:'בריאות',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.0,yeinot:7.8}},
+    {v:'פיתות מיני 10 יח׳',w:'10 יח׳',note:'קטנות לילדים',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+  ]},
+  {id:14,name:'פרורי לחם',emoji:'🍞',cat:'אפייה',variants:[
+    {v:'פרורי לחם 500 גר — אנגל',w:'500 גר',note:'קלאסי',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+    {v:'פרורי לחם 1 ק"ג — אנגל',w:'1 ק"ג',note:'כלכלי',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.0,yeinot:11.8}},
+    {v:'פרורי לחם פנקו 200 גר',w:'200 גר',note:'יפני קראנצ׳י',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'פרורי לחם תבלינים 500 גר',w:'500 גר',note:'מתובל',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.0,yeinot:7.8}},
+  ]},
+  {id:15,name:'לחמניות ובאגט',emoji:'🥖',cat:'אפייה',variants:[
+    {v:'לחמניות 4 יח׳',w:'4 יח׳',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.0,yeinot:7.8}},
+    {v:'לחמניות שומשום 4 יח׳',w:'4 יח׳',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.0,yeinot:8.8}},
+    {v:'באגט 2 יח׳',w:'2 יח׳',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.0,yeinot:8.8}},
+  ]},
+  // ===== שימורים =====
+  {id:16,name:'רסק עגבניות',emoji:'🍅',cat:'שימורים',variants:[
+    {v:'רסק עגבניות 70 גר — אסם',w:'70 גר',note:'קלאסי',prices:{hazi:2.9,osher:3.2,yesh:2.8,shufersal:3.0,yeinot:2.9}},
+    {v:'רסק עגבניות 3×70 גר — אסם',w:'3×70 גר',note:'חיסכון',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.0,yeinot:7.8}},
+    {v:'רסק עגבניות 140 גר — אסם',w:'140 גר',note:'גדול',prices:{hazi:4.9,osher:5.2,yesh:4.8,shufersal:5.0,yeinot:4.9}},
+    {v:'עגבניות מרוסקות 400 גר',w:'400 גר',note:'לרוטב',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'עגבניות שלמות בקופסה 400 גר',w:'400 גר',note:'לבישול',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'רוטב עגבניות לפסטה 350 גר — פרינץ',w:'350 גר',note:'מוכן',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+  ]},
+  {id:17,name:'טונה',emoji:'🐟',cat:'שימורים',variants:[
+    {v:'טונה בשמן 160 גר — ספרינג',w:'160 גר',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:7.8}},
+    {v:'טונה במים 160 גר — ספרינג',w:'160 גר',note:'קלורי',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:7.8}},
+    {v:'טונה 3×160 גר — ספרינג',w:'3×160 גר',note:'חיסכון',prices:{hazi:20.9,osher:22.0,yesh:19.9,shufersal:23.0,yeinot:21.0}},
+    {v:'טונה 5×160 גר',w:'5×160 גר',note:'מגה חיסכון',prices:{hazi:31.9,osher:33.0,yesh:30.9,shufersal:35.0,yeinot:32.0}},
+  ]},
+  {id:18,name:'קטניות שימור',emoji:'🥫',cat:'שימורים',variants:[
+    {v:'חומוס גרגרים 400 גר',w:'400 גר',note:'',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+    {v:'שעועית לבנה 400 גר',w:'400 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'עדשים כתומות 400 גר',w:'400 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'תירס 200 גר',w:'200 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'זיתים ירוקים 560 גר',w:'560 גר',note:'',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+    {v:'זיתים שחורים 560 גר',w:'560 גר',note:'',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.9,yeinot:12.0}},
+  ]},
+  // ===== ירקות =====
+  {id:19,name:'עגבניות',emoji:'🍅',cat:'ירקות',variants:[
+    {v:'עגבניות שרי 250 גר',w:'250 גר',note:'מתוקות',prices:{hazi:6.9,osher:6.5,yesh:7.2,shufersal:6.8,yeinot:6.3}},
+    {v:'עגבניות שרי 500 גר',w:'500 גר',note:'מתוקות',prices:{hazi:11.9,osher:11.5,yesh:12.2,shufersal:11.8,yeinot:11.0}},
+    {v:'עגבניות רגילות 1 ק"ג',w:'1 ק"ג',note:'לסלט',prices:{hazi:9.9,osher:8.9,yesh:10.5,shufersal:9.5,yeinot:8.5}},
+    {v:'עגבניות בשרניות 1 ק"ג',w:'1 ק"ג',note:'לרוטב',prices:{hazi:11.9,osher:10.9,yesh:12.5,shufersal:11.5,yeinot:10.5}},
+  ]},
+  {id:20,name:'מלפפון',emoji:'🥒',cat:'ירקות',variants:[
+    {v:'מלפפון פרסי 500 גר',w:'500 גר',note:'קטן קראנצ׳י',prices:{hazi:6.9,osher:6.5,yesh:7.2,shufersal:6.8,yeinot:6.3}},
+    {v:'מלפפון רגיל 1 ק"ג',w:'1 ק"ג',note:'גדול',prices:{hazi:8.9,osher:8.5,yesh:9.2,shufersal:8.8,yeinot:8.3}},
+  ]},
+  {id:21,name:'פלפל',emoji:'🫑',cat:'ירקות',variants:[
+    {v:'פלפל אדום 1 ק"ג',w:'1 ק"ג',note:'מתוק',prices:{hazi:10.9,osher:9.9,yesh:11.5,shufersal:10.5,yeinot:9.5}},
+    {v:'פלפל ירוק 1 ק"ג',w:'1 ק"ג',note:'קצת מר',prices:{hazi:7.9,osher:7.5,yesh:8.2,shufersal:7.8,yeinot:7.3}},
+    {v:'פלפל צהוב 1 ק"ג',w:'1 ק"ג',note:'מתוק עדין',prices:{hazi:11.9,osher:10.9,yesh:12.5,shufersal:11.5,yeinot:10.5}},
+    {v:'מיקס 3 צבעים 500 גר',w:'500 גר',note:'',prices:{hazi:9.9,osher:9.5,yesh:10.2,shufersal:9.8,yeinot:9.3}},
+  ]},
+  {id:22,name:'בצל ושום',emoji:'🧅',cat:'ירקות',variants:[
+    {v:'בצל לבן 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:4.9,osher:4.5,yesh:5.2,shufersal:4.8,yeinot:4.3}},
+    {v:'בצל סגול 500 גר',w:'500 גר',note:'עדין',prices:{hazi:5.9,osher:5.5,yesh:6.2,shufersal:5.8,yeinot:5.3}},
+    {v:'שום 200 גר',w:'200 גר',note:'',prices:{hazi:7.9,osher:7.5,yesh:8.2,shufersal:7.8,yeinot:7.3}},
+    {v:'שום טחון 200 גר — בצנצנת',w:'200 גר',note:'מוכן',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+  ]},
+  {id:23,name:'תפוחי אדמה',emoji:'🥔',cat:'ירקות',variants:[
+    {v:'תפו"א 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:5.9,osher:5.5,yesh:6.2,shufersal:5.8,yeinot:5.3}},
+    {v:'תפו"א 2.5 ק"ג',w:'2.5 ק"ג',note:'כלכלי',prices:{hazi:11.9,osher:11.5,yesh:12.5,shufersal:11.8,yeinot:11.0}},
+    {v:'תפו"א מיני 500 גר',w:'500 גר',note:'לצלייה',prices:{hazi:7.9,osher:7.5,yesh:8.2,shufersal:7.8,yeinot:7.3}},
+    {v:'בטטה 1 ק"ג',w:'1 ק"ג',note:'מתוקה',prices:{hazi:8.9,osher:8.5,yesh:9.2,shufersal:8.8,yeinot:8.3}},
+  ]},
+  {id:24,name:'גזר',emoji:'🥕',cat:'ירקות',variants:[
+    {v:'גזר 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:4.9,osher:4.5,yesh:5.2,shufersal:4.8,yeinot:4.3}},
+    {v:'גזר בייבי 200 גר',w:'200 גר',note:'מוכן לאכילה',prices:{hazi:7.9,osher:7.5,yesh:8.2,shufersal:7.8,yeinot:7.3}},
+  ]},
+  // ===== פירות =====
+  {id:25,name:'תפוחים',emoji:'🍎',cat:'פירות',variants:[
+    {v:'גרנד סמית 1 ק"ג',w:'1 ק"ג',note:'חמצמץ ירוק',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.9,yeinot:11.0}},
+    {v:'פוג׳י 1 ק"ג',w:'1 ק"ג',note:'מתוק אדום',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:12.0}},
+    {v:'גלה 1 ק"ג',w:'1 ק"ג',note:'עדין מתוק',prices:{hazi:10.9,osher:11.5,yesh:10.5,shufersal:11.9,yeinot:10.0}},
+  ]},
+  {id:26,name:'בננות',emoji:'🍌',cat:'פירות',variants:[
+    {v:'בננות 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.0,yeinot:8.0}},
+    {v:'בננות מיני 500 גר',w:'500 גר',note:'מתוקות',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.5}},
+  ]},
+  {id:27,name:'תפוזים',emoji:'🍊',cat:'פירות',variants:[
+    {v:'תפוזים 1 ק"ג',w:'1 ק"ג',note:'לאכילה',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.9,yeinot:9.0}},
+    {v:'תפוזים לסחיטה 2 ק"ג',w:'2 ק"ג',note:'למיץ',prices:{hazi:14.9,osher:15.5,yesh:14.5,shufersal:15.9,yeinot:14.0}},
+  ]},
+  {id:28,name:'ענבים',emoji:'🍇',cat:'פירות',variants:[
+    {v:'ענבים לבנים 500 גר',w:'500 גר',note:'',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:12.5}},
+    {v:'ענבים אדומים 500 גר',w:'500 גר',note:'',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:12.5}},
+  ]},
+  // ===== יבשים ומדפים =====
+  {id:29,name:'שמן',emoji:'🫙',cat:'יבשים',variants:[
+    {v:'שמן זית כתית 750 מ"ל',w:'750 מ"ל',note:'איכותי',prices:{hazi:22.9,osher:24.5,yesh:21.9,shufersal:25.0,yeinot:23.5}},
+    {v:'שמן זית 500 מ"ל — יד מרדכי',w:'500 מ"ל',note:'',prices:{hazi:16.9,osher:18.0,yesh:15.9,shufersal:18.5,yeinot:17.0}},
+    {v:'שמן קנולה 1 ל — שף',w:'1 ל',note:'לבישול',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'שמן חמניות 1 ל',w:'1 ל',note:'לטיגון',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+  ]},
+  {id:30,name:'פסטה',emoji:'🍝',cat:'יבשים',variants:[
+    {v:'ספגטי 500 גר — די צ׳קו',w:'500 גר',note:'',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+    {v:'פנה 500 גר — די צ׳קו',w:'500 גר',note:'',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+    {v:'ספגטי 500 גר — אסם',w:'500 גר',note:'',prices:{hazi:4.5,osher:4.9,yesh:4.2,shufersal:5.0,yeinot:4.7}},
+    {v:'פרפרים 500 גר — אסם',w:'500 גר',note:'',prices:{hazi:4.5,osher:4.9,yesh:4.2,shufersal:5.0,yeinot:4.7}},
+    {v:'פסטה מלאה 500 גר',w:'500 גר',note:'בריאות',prices:{hazi:6.5,osher:6.9,yesh:6.2,shufersal:7.0,yeinot:6.7}},
+  ]},
+  {id:31,name:'אורז',emoji:'🍚',cat:'יבשים',variants:[
+    {v:'אורז לבן 1 ק"ג — אסם',w:'1 ק"ג',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:7.8}},
+    {v:'אורז בסמטי 1 ק"ג',w:'1 ק"ג',note:'ריחני',prices:{hazi:10.9,osher:11.5,yesh:10.5,shufersal:11.5,yeinot:10.8}},
+    {v:'אורז מלא 1 ק"ג',w:'1 ק"ג',note:'בריאות',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:9.8}},
+    {v:'אורז 2 ק"ג — אסם',w:'2 ק"ג',note:'כלכלי',prices:{hazi:13.9,osher:14.5,yesh:13.5,shufersal:14.5,yeinot:13.8}},
+  ]},
+  {id:32,name:'קמח',emoji:'🌾',cat:'יבשים',variants:[
+    {v:'קמח לבן 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'קמח מלא 1 ק"ג',w:'1 ק"ג',note:'בריאות',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.0,yeinot:7.8}},
+    {v:'קמח תופח 1 ק"ג',w:'1 ק"ג',note:'לעוגות',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+  ]},
+  {id:33,name:'סוכר',emoji:'🍬',cat:'יבשים',variants:[
+    {v:'סוכר לבן 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.0,yeinot:5.8}},
+    {v:'סוכר חום 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.0,yeinot:8.8}},
+    {v:'אבקת סוכר 500 גר',w:'500 גר',note:'לאפייה',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.0,yeinot:6.8}},
+  ]},
+  {id:34,name:'דגני בוקר',emoji:'🥣',cat:'יבשים',variants:[
+    {v:'קורנפלקס 500 גר — קלוגס',w:'500 גר',note:'',prices:{hazi:14.9,osher:15.5,yesh:14.5,shufersal:15.9,yeinot:15.0}},
+    {v:'גרנולה 500 גר',w:'500 גר',note:'בריאות',prices:{hazi:18.9,osher:19.5,yesh:17.9,shufersal:20.0,yeinot:19.0}},
+    {v:'שיבולת שועל 500 גר',w:'500 גר',note:'לדייסה',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'סריאל 500 גר — תלמה',w:'500 גר',note:'ישראלי',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+  ]},
+  {id:35,name:'שקדים ואגוזים',emoji:'🥜',cat:'יבשים',variants:[
+    {v:'שקדים 200 גר',w:'200 גר',note:'',prices:{hazi:14.9,osher:15.5,yesh:14.5,shufersal:15.9,yeinot:15.0}},
+    {v:'אגוזי מלך 200 גר',w:'200 גר',note:'',prices:{hazi:16.9,osher:17.5,yesh:16.5,shufersal:17.9,yeinot:17.0}},
+    {v:'קשיו 200 גר',w:'200 גר',note:'',prices:{hazi:19.9,osher:20.5,yesh:19.5,shufersal:21.0,yeinot:20.0}},
+    {v:'מיקס אגוזים 200 גר',w:'200 גר',note:'',prices:{hazi:17.9,osher:18.5,yesh:17.5,shufersal:18.9,yeinot:18.0}},
+  ]},
+  // ===== קפה ומשקאות =====
+  {id:36,name:'קפה שחור',emoji:'☕',cat:'משקאות',variants:[
+    {v:'קפה טורקי 200 גר — עלית',w:'200 גר',note:'הכי נמכר בישראל',prices:{hazi:19.9,osher:21.0,yesh:18.9,shufersal:22.0,yeinot:20.5}},
+    {v:'קפה טורקי 500 גר — עלית',w:'500 גר',note:'כלכלי',prices:{hazi:39.9,osher:41.5,yesh:38.9,shufersal:43.0,yeinot:40.5}},
+    {v:'נס קפה 200 גר — עלית',w:'200 גר',note:'אינסטנט',prices:{hazi:24.9,osher:26.0,yesh:23.9,shufersal:27.0,yeinot:25.5}},
+    {v:'קפה טחון 250 גר',w:'250 גר',note:'לפרנץ׳ פרס',prices:{hazi:22.9,osher:24.5,yesh:21.9,shufersal:25.0,yeinot:23.5}},
+    {v:'קפסולות נספרסו 10 יח׳',w:'10 יח׳',note:'',prices:{hazi:19.9,osher:21.5,yesh:18.9,shufersal:22.0,yeinot:20.5}},
+    {v:'קפסולות דולצ׳ה גוסטו 16 יח׳',w:'16 יח׳',note:'',prices:{hazi:24.9,osher:26.0,yesh:23.9,shufersal:27.0,yeinot:25.5}},
+  ]},
+  {id:37,name:'תה',emoji:'🍵',cat:'משקאות',variants:[
+    {v:'תה שחור 25 שקיות — ויסוצקי',w:'25 שק',note:'קלאסי ישראלי',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'תה נענע 25 שקיות — ויסוצקי',w:'25 שק',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'תה ירוק 25 שקיות',w:'25 שק',note:'בריאות',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'תה קמומיל 20 שקיות',w:'20 שק',note:'לשינה',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+  ]},
+  {id:38,name:'מיץ',emoji:'🥤',cat:'משקאות',variants:[
+    {v:'מיץ תפוזים 1 ל — פריגת',w:'1 ל',note:'',prices:{hazi:8.9,osher:9.5,yesh:8.5,shufersal:9.0,yeinot:8.2}},
+    {v:'מיץ תפוזים 1.5 ל — פריגת',w:'1.5 ל',note:'משפחתי',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.5,yeinot:11.8}},
+    {v:'מיץ תפוחים 1 ל',w:'1 ל',note:'',prices:{hazi:7.9,osher:8.5,yesh:7.5,shufersal:8.0,yeinot:7.2}},
+    {v:'מיץ ענבים 1 ל',w:'1 ל',note:'',prices:{hazi:8.9,osher:9.5,yesh:8.5,shufersal:9.0,yeinot:8.2}},
+  ]},
+  {id:39,name:'מים',emoji:'💧',cat:'משקאות',variants:[
+    {v:'מים 1.5 ל × 6 — נביעות',w:'9 ל',note:'',prices:{hazi:13.9,osher:14.5,yesh:12.9,shufersal:14.0,yeinot:13.5}},
+    {v:'מים 0.5 ל × 6 — נביעות',w:'3 ל',note:'לדרך',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.0,yeinot:9.8}},
+    {v:'מים מוגזים 1.5 ל × 6',w:'9 ל',note:'מוגז',prices:{hazi:15.9,osher:16.5,yesh:14.9,shufersal:16.0,yeinot:15.5}},
+    {v:'סודה 1.5 ל × 6',w:'9 ל',note:'',prices:{hazi:12.9,osher:13.5,yesh:11.9,shufersal:13.0,yeinot:12.5}},
+  ]},
+  {id:40,name:'קולה וגזוז',emoji:'🥤',cat:'משקאות',variants:[
+    {v:'קוקה קולה 1.5 ל',w:'1.5 ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'קוקה קולה 2 ל',w:'2 ל',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'קולה זירו 1.5 ל',w:'1.5 ל',note:'ללא סוכר',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'ספרייט 1.5 ל',w:'1.5 ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'פאנטה תפוז 1.5 ל',w:'1.5 ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'פפסי 1.5 ל',w:'1.5 ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'7UP 1.5 ל',w:'1.5 ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'שוורץ תפוז 1.5 ל — שטראוס',w:'1.5 ל',note:'ישראלי',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+    {v:'RC קולה 1.5 ל',w:'1.5 ל',note:'כלכלי',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+  ]},
+  {id:41,name:'טכדטמה',emoji:'🫖',cat:'משקאות',variants:[
+    {v:'טכדטמה 1.5 ל — שטראוס',w:'1.5 ל',note:'ישראלי קלאסי',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+    {v:'טכדטמה לימון 1.5 ל',w:'1.5 ל',note:'',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+    {v:'טכדטמה 6 × 1.5 ל',w:'9 ל',note:'חבילה',prices:{hazi:36.9,osher:38.5,yesh:34.9,shufersal:40.0,yeinot:37.5}},
+  ]},
+  {id:42,name:'שוקו ומשקאות חלב',emoji:'🍫',cat:'משקאות',variants:[
+    {v:'שוקו 500 מ"ל — תנובה',w:'500 מ"ל',note:'ילדים',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+    {v:'שוקו 200 מ"ל × 6 — תנובה',w:'6 יח׳',note:'קטן לילדים',prices:{hazi:18.9,osher:19.5,yesh:17.9,shufersal:20.0,yeinot:19.0}},
+    {v:'מילקו 200 מ"ל × 6',w:'6 יח׳',note:'',prices:{hazi:16.9,osher:17.5,yesh:15.9,shufersal:17.9,yeinot:16.5}},
+    {v:'קפה עם חלב 500 מ"ל',w:'500 מ"ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+  ]},
+  {id:43,name:'משקאות אנרגיה',emoji:'⚡',cat:'משקאות',variants:[
+    {v:'רד בול 250 מ"ל',w:'250 מ"ל',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'רד בול 4 × 250 מ"ל',w:'4 יח׳',note:'חיסכון',prices:{hazi:29.9,osher:31.5,yesh:28.9,shufersal:32.0,yeinot:30.5}},
+    {v:'מונסטר 500 מ"ל',w:'500 מ"ל',note:'',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.9,yeinot:12.0}},
+    {v:'בלאק 330 מ"ל — ישראלי',w:'330 מ"ל',note:'',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+  ]},
+  {id:44,name:'נקטר וספרינג',emoji:'🍹',cat:'משקאות',variants:[
+    {v:'נקטר תות 1 ל — תמד',w:'1 ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'נקטר אפרסק 1 ל — תמד',w:'1 ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'נקטר מנגו 1 ל',w:'1 ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'ספרינג תפוז 330 מ"ל × 6',w:'6 יח׳',note:'ישראלי קלאסי',prices:{hazi:18.9,osher:19.5,yesh:17.9,shufersal:20.0,yeinot:19.0}},
+    {v:'איסתא לימון 330 מ"ל × 6',w:'6 יח׳',note:'',prices:{hazi:17.9,osher:18.5,yesh:16.9,shufersal:18.9,yeinot:17.5}},
+    {v:'אייסטי לימון 1.5 ל',w:'1.5 ל',note:'תה קר',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+  ]},
+  // ===== בשר ודגים =====
+  {id:45,name:'חזה עוף',emoji:'🍗',cat:'בשר',variants:[
+    {v:'חזה עוף טרי 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:29.9,osher:32.0,yesh:28.5,shufersal:31.0,yeinot:29.0}},
+    {v:'חזה עוף קפוא 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:22.9,osher:24.5,yesh:21.9,shufersal:25.0,yeinot:23.0}},
+    {v:'שניצל עוף 1 ק"ג',w:'1 ק"ג',note:'דק לטיגון',prices:{hazi:32.9,osher:34.5,yesh:31.9,shufersal:35.0,yeinot:33.0}},
+  ]},
+  {id:46,name:'בשר טחון',emoji:'🥩',cat:'בשר',variants:[
+    {v:'בשר טחון בקר 500 גר — 20%',w:'500 גר',note:'',prices:{hazi:22.9,osher:24.0,yesh:21.9,shufersal:24.5,yeinot:23.0}},
+    {v:'בשר טחון בקר 1 ק"ג — 20%',w:'1 ק"ג',note:'כלכלי',prices:{hazi:39.9,osher:42.0,yesh:38.5,shufersal:43.0,yeinot:40.0}},
+    {v:'בשר טחון הודו 500 גר',w:'500 גר',note:'רזה',prices:{hazi:18.9,osher:20.0,yesh:17.9,shufersal:20.5,yeinot:19.0}},
+    {v:'בשר טחון כבש 500 גר',w:'500 גר',note:'לקבב',prices:{hazi:32.9,osher:34.5,yesh:31.9,shufersal:35.0,yeinot:33.0}},
+  ]},
+  {id:47,name:'נקניקיות',emoji:'🌭',cat:'בשר',variants:[
+    {v:'נקניקיות עוף 500 גר — אסם',w:'500 גר',note:'',prices:{hazi:18.9,osher:19.5,yesh:17.9,shufersal:20.0,yeinot:19.0}},
+    {v:'נקניקיות בקר 500 גר',w:'500 גר',note:'',prices:{hazi:21.9,osher:22.5,yesh:20.9,shufersal:23.0,yeinot:22.0}},
+    {v:'נקניק שניצל 300 גר',w:'300 גר',note:'',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'קבנוס 200 גר',w:'200 גר',note:'מעושן',prices:{hazi:18.9,osher:19.5,yesh:17.9,shufersal:20.0,yeinot:19.0}},
+  ]},
+  // ===== חטיפים =====
+  {id:48,name:'שוקולד ישראלי',emoji:'🍫',cat:'חטיפים',variants:[
+    {v:'שוקולד פרה 100 גר — תנובה',w:'100 גר',note:'ישראלי קלאסי',prices:{hazi:7.9,osher:8.5,yesh:7.5,shufersal:9.0,yeinot:8.0}},
+    {v:'שוקולד חלב 100 גר — עלית',w:'100 גר',note:'',prices:{hazi:8.9,osher:9.5,yesh:8.5,shufersal:10.0,yeinot:9.0}},
+    {v:'שוקולד מריר 72% 100 גר — עלית',w:'100 גר',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:11.0,yeinot:10.0}},
+    {v:'שוקולד לבן 100 גר — עלית',w:'100 גר',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:11.0,yeinot:10.0}},
+  ]},
+  {id:49,name:'שוקולד מותגים',emoji:'🍫',cat:'חטיפים',variants:[
+    {v:'קיט קט 41.5 גר',w:'41.5 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+    {v:'מארס 51 גר',w:'51 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+    {v:'סניקרס 50 גר',w:'50 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+    {v:'טוויקס 50 גר',w:'50 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+    {v:'מילקה 100 גר',w:'100 גר',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.9,yeinot:10.0}},
+    {v:'קינדר שוקולד 100 גר',w:'100 גר',note:'לילדים',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'קינדר בואנו 43 גר',w:'43 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+  ]},
+  {id:50,name:'קרמבו ועפרוני',emoji:'🍡',cat:'חטיפים',variants:[
+    {v:'קרמבו קלאסי 6 יח׳ — עלית',w:'6 יח׳',note:'ישראלי',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'קרמבו שוקולד 6 יח׳ — עלית',w:'6 יח׳',note:'שוקולד כהה',prices:{hazi:15.9,osher:16.5,yesh:14.9,shufersal:16.9,yeinot:15.5}},
+    {v:'עפרוני 4 יח׳ — עלית',w:'4 יח׳',note:'קלאסי',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.9,yeinot:10.0}},
+  ]},
+  {id:51,name:'ביסקוויטים ועוגיות',emoji:'🍪',cat:'חטיפים',variants:[
+    {v:'ביסקוויט 200 גר — עלית',w:'200 גר',note:'קלאסי',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+    {v:'אוריאו 176 גר',w:'176 גר',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.9,yeinot:10.0}},
+    {v:'פטי ב 200 גר — עלית',w:'200 גר',note:'ישראלי',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'ריץ 200 גר',w:'200 גר',note:'מלוח',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+  ]},
+  {id:52,name:'ביסלי ובמבה',emoji:'🥨',cat:'חטיפים',variants:[
+    {v:'ביסלי גריל 70 גר — עלית',w:'70 גר',note:'הכי נמכר',prices:{hazi:4.9,osher:5.2,yesh:4.8,shufersal:5.5,yeinot:5.0}},
+    {v:'ביסלי גריל 3 יח׳ — עלית',w:'3×70 גר',note:'חיסכון',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:14.0,yeinot:13.0}},
+    {v:'ביסלי פיצה 70 גר',w:'70 גר',note:'',prices:{hazi:4.9,osher:5.2,yesh:4.8,shufersal:5.5,yeinot:5.0}},
+    {v:'במבה 80 גר — אסם',w:'80 גר',note:'',prices:{hazi:4.9,osher:5.2,yesh:4.8,shufersal:5.5,yeinot:5.0}},
+    {v:'במבה 5 יח׳ — אסם',w:'5×80 גר',note:'חיסכון',prices:{hazi:19.9,osher:20.5,yesh:18.9,shufersal:21.5,yeinot:20.0}},
+    {v:'ניגוסים 80 גר — אסם',w:'80 גר',note:'',prices:{hazi:4.9,osher:5.2,yesh:4.8,shufersal:5.5,yeinot:5.0}},
+  ]},
+  {id:53,name:'דורינטוס וצ׳יפס',emoji:'🌽',cat:'חטיפים',variants:[
+    {v:'דורינטוס קצ׳אפ 100 גר',w:'100 גר',note:'הכי נמכר',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'דורינטוס גבינה 100 גר',w:'100 גר',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'תפוצ׳יפס 70 גר',w:'70 גר',note:'',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+    {v:'תפוצ׳יפס 200 גר',w:'200 גר',note:'גדול',prices:{hazi:13.9,osher:14.5,yesh:12.9,shufersal:14.9,yeinot:13.5}},
+    {v:'פרינגלס אוריגינל 165 גר',w:'165 גר',note:'',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'פרינגלס שמנת בצל 165 גר',w:'165 גר',note:'',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+  ]},
+  {id:54,name:'פיצוחים',emoji:'🥜',cat:'חטיפים',variants:[
+    {v:'גרעיני חמנייה 200 גר',w:'200 גר',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'בוטנים קלויים 200 גר',w:'200 גר',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'פיסטוקים 200 גר',w:'200 גר',note:'',prices:{hazi:18.9,osher:19.5,yesh:17.9,shufersal:20.0,yeinot:19.0}},
+    {v:'מיקס פיצוחים 200 גר',w:'200 גר',note:'',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+  ]},
+  {id:55,name:'ממתקים וגומי',emoji:'🍬',cat:'חטיפים',variants:[
+    {v:'גומי דובונים 100 גר — הריבו',w:'100 גר',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'חלבה 200 גר',w:'200 גר',note:'ישראלי',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'ערבי ערב 100 גר — עלית',w:'100 גר',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.9,yeinot:10.0}},
+    {v:'מנטוס 38 גר',w:'38 גר',note:'',prices:{hazi:3.9,osher:4.2,yesh:3.8,shufersal:4.5,yeinot:4.0}},
+    {v:'סקיטלס 45 גר',w:'45 גר',note:'',prices:{hazi:4.9,osher:5.2,yesh:4.8,shufersal:5.5,yeinot:5.0}},
+  ]},
+  {id:56,name:'ממרחים',emoji:'🍯',cat:'חטיפים',variants:[
+    {v:'נוטלה 400 גר',w:'400 גר',note:'',prices:{hazi:19.9,osher:20.5,yesh:18.9,shufersal:21.5,yeinot:20.0}},
+    {v:'חמאת בוטנים 340 גר',w:'340 גר',note:'',prices:{hazi:14.9,osher:15.5,yesh:14.5,shufersal:15.9,yeinot:15.0}},
+    {v:'טחינה גולמית 500 גר',w:'500 גר',note:'',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+    {v:'דבש 500 גר',w:'500 גר',note:'',prices:{hazi:18.9,osher:19.5,yesh:17.9,shufersal:20.0,yeinot:19.0}},
+    {v:'ריבה תות 340 גר',w:'340 גר',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'ריבה תפוחים 340 גר',w:'340 גר',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+  ]},
+  {id:57,name:'עוגות ומאפים',emoji:'🧁',cat:'חטיפים',variants:[
+    {v:'קרמבו עוגת שוקולד — שטראוס',w:'350 גר',note:'',prices:{hazi:19.9,osher:20.5,yesh:18.9,shufersal:21.5,yeinot:20.0}},
+    {v:'מאמול תמרים 200 גר',w:'200 גר',note:'',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+    {v:'קרואסון 4 יח׳',w:'4 יח׳',note:'',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+    {v:'רולדין מיני 4 יח׳',w:'4 יח׳',note:'',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+  ]},
+  // ===== ניקיון =====
+  {id:58,name:'אקונומיקה',emoji:'🧴',cat:'ניקיון',variants:[
+    {v:'אקונומיקה לבנה 750 מ"ל',w:'750 מ"ל',note:'קלאסית',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+    {v:'אקונומיקה לבנה 1.5 ל',w:'1.5 ל',note:'כלכלי',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'אקונומיקה ריחנית לוונדר 750 מ"ל',w:'750 מ"ל',note:'ריחנית',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+    {v:'אקונומיקה מרוכזת 500 מ"ל',w:'500 מ"ל',note:'חזקה',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+  ]},
+  {id:59,name:'זאוול',emoji:'🧹',cat:'ניקיון',variants:[
+    {v:'זאוול לבן 750 מ"ל',w:'750 מ"ל',note:'קלאסי',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.9,yeinot:12.0}},
+    {v:'זאוול לבן 1.5 ל',w:'1.5 ל',note:'כלכלי',prices:{hazi:17.9,osher:18.5,yesh:16.9,shufersal:18.9,yeinot:17.5}},
+    {v:'זאוול ורוד לשירותים 750 מ"ל',w:'750 מ"ל',note:'לאסלה',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+    {v:'זאוול ג׳ל 750 מ"ל',w:'750 מ"ל',note:'ג׳ל עבה לאבנית',prices:{hazi:13.9,osher:14.5,yesh:13.5,shufersal:14.9,yeinot:14.0}},
+  ]},
+  {id:60,name:'סבון כלים',emoji:'🫧',cat:'ניקיון',variants:[
+    {v:'פיירי 500 מ"ל — P&G',w:'500 מ"ל',note:'קלאסי',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:8.8}},
+    {v:'פיירי 1 ל — P&G',w:'1 ל',note:'כלכלי',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'סבון כלים לימון 500 מ"ל',w:'500 מ"ל',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+  ]},
+  {id:61,name:'אבקת כביסה',emoji:'🧺',cat:'ניקיון',variants:[
+    {v:'אריאל 1.5 ק"ג — P&G',w:'1.5 ק"ג',note:'',prices:{hazi:24.9,osher:26.0,yesh:23.9,shufersal:27.0,yeinot:25.5}},
+    {v:'אריאל 3 ק"ג — P&G',w:'3 ק"ג',note:'כלכלי',prices:{hazi:42.9,osher:44.5,yesh:41.9,shufersal:46.0,yeinot:43.5}},
+    {v:'פרסיל 1.5 ק"ג',w:'1.5 ק"ג',note:'',prices:{hazi:26.9,osher:28.0,yesh:25.9,shufersal:29.0,yeinot:27.5}},
+    {v:'קפסולות אריאל 20 יח׳',w:'20 יח׳',note:'',prices:{hazi:32.9,osher:34.5,yesh:31.9,shufersal:35.9,yeinot:33.5}},
+  ]},
+  {id:62,name:'מרכך כביסה',emoji:'🌸',cat:'ניקיון',variants:[
+    {v:'לנור 1 ל — P&G',w:'1 ל',note:'',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'לנור 2 ל — P&G',w:'2 ל',note:'כלכלי',prices:{hazi:24.9,osher:26.0,yesh:23.9,shufersal:27.0,yeinot:25.5}},
+    {v:'סופלן 1 ל',w:'1 ל',note:'',prices:{hazi:13.9,osher:14.5,yesh:12.9,shufersal:14.9,yeinot:13.5}},
+  ]},
+  {id:63,name:'טאבס מדיח',emoji:'🍽️',cat:'ניקיון',variants:[
+    {v:'טאבס 3ב1 30 יח׳ — פיניש',w:'30 יח׳',note:'',prices:{hazi:29.9,osher:31.5,yesh:28.9,shufersal:32.0,yeinot:30.5}},
+    {v:'טאבס All in 1 50 יח׳ — פיניש',w:'50 יח׳',note:'',prices:{hazi:44.9,osher:46.5,yesh:43.9,shufersal:47.0,yeinot:45.5}},
+    {v:'אבקת מדיח 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:19.9,osher:20.5,yesh:18.9,shufersal:21.5,yeinot:20.0}},
+    {v:'נוזל שטיפה למדיח 500 מ"ל',w:'500 מ"ל',note:'ברק לכלים',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+  ]},
+  {id:64,name:'נוזלי ניקוי',emoji:'🧴',cat:'ניקיון',variants:[
+    {v:'מי חלונות 500 מ"ל — וינדקס',w:'500 מ"ל',note:'לחלונות',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'נוזל ריצפות 1 ל',w:'1 ל',note:'למגב',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'מנקה שירותים דאק 500 מ"ל',w:'500 מ"ל',note:'לאסלה',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'נוזל רב שימושי 500 מ"ל — מר מאסל',w:'500 מ"ל',note:'מטבח+אמבטיה',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.9,yeinot:12.0}},
+    {v:'זאוול ספריי 500 מ"ל',w:'500 מ"ל',note:'לריסוס',prices:{hazi:10.9,osher:11.5,yesh:10.5,shufersal:11.9,yeinot:11.0}},
+  ]},
+  {id:65,name:'נייר מגבת',emoji:'🧻',cat:'ניקיון',variants:[
+    {v:'נייר מגבת 2 גלילות',w:'2 גלילות',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'נייר מגבת 4 גלילות',w:'4 גלילות',note:'כלכלי',prices:{hazi:15.9,osher:16.5,yesh:14.9,shufersal:16.9,yeinot:15.5}},
+    {v:'נייר מגבת 4 גלילות — 3 שכבות',w:'4 גלילות',note:'עבה',prices:{hazi:19.9,osher:20.5,yesh:18.9,shufersal:21.0,yeinot:20.0}},
+  ]},
+  {id:66,name:'שקיות אשפה',emoji:'🗑️',cat:'ניקיון',variants:[
+    {v:'שקיות אשפה 60 ל 20 יח׳',w:'20 יח׳',note:'בינוני',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'שקיות אשפה 60 ל 30 יח׳',w:'30 יח׳',note:'',prices:{hazi:11.9,osher:12.5,yesh:11.5,shufersal:12.9,yeinot:12.0}},
+    {v:'שקיות אשפה 120 ל 10 יח׳',w:'10 יח׳',note:'גדול',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.9,yeinot:10.0}},
+    {v:'שקיות ניילון 100 יח׳',w:'100 יח׳',note:'לירקות',prices:{hazi:5.9,osher:6.2,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+  ]},
+  {id:67,name:'ספוגיות',emoji:'🧽',cat:'ניקיון',variants:[
+    {v:'ספוגית סקוטש ברייט 2 יח׳',w:'2 יח׳',note:'חזקה',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'ספוגיות 5 יח׳',w:'5 יח׳',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'צמר פלדה 8 יח׳',w:'8 יח׳',note:'לסירים',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+    {v:'כפפות גומי 2 יח׳',w:'2 יח׳',note:'לניקיון',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+  ]},
+  {id:68,name:'ניחוח לבית',emoji:'🌸',cat:'ניקיון',variants:[
+    {v:'ספריי ניחוח 300 מ"ל — גלד',w:'300 מ"ל',note:'',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+    {v:'מוט ניחוח 100 מ"ל',w:'100 מ"ל',note:'',prices:{hazi:19.9,osher:20.5,yesh:18.9,shufersal:21.0,yeinot:20.0}},
+    {v:'מסיר ריחות שירותים — פיריז',w:'400 מ"ל',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'פרחי אביב לארון',w:'1 יח׳',note:'לבגדים',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+  ]},
+  {id:69,name:'נייר אלומיניום ואפייה',emoji:'🍱',cat:'ניקיון',variants:[
+    {v:'נייר אלומיניום 10 מ — סלע',w:'10 מ',note:'',prices:{hazi:6.9,osher:7.2,yesh:6.5,shufersal:7.5,yeinot:7.0}},
+    {v:'נייר אלומיניום 30 מ — סלע',w:'30 מ',note:'כלכלי',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'ניילון נצמד 30 מ',w:'30 מ',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'נייר אפייה 10 מ',w:'10 מ',note:'לתנור',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+  ]},
+  // ===== היגיינה אישית =====
+  {id:70,name:'שמפו',emoji:'🧴',cat:'היגיינה',variants:[
+    {v:'שמפו שיער רגיל 400 מ"ל — פנטן',w:'400 מ"ל',note:'',prices:{hazi:16.9,osher:17.5,yesh:15.9,shufersal:17.9,yeinot:16.5}},
+    {v:'שמפו שיער יבש 400 מ"ל — פנטן',w:'400 מ"ל',note:'',prices:{hazi:17.9,osher:18.5,yesh:16.9,shufersal:18.9,yeinot:17.5}},
+    {v:'שמפו קשקשים 400 מ"ל — הד אנד שולדרס',w:'400 מ"ל',note:'',prices:{hazi:18.9,osher:19.5,yesh:17.9,shufersal:20.0,yeinot:19.0}},
+    {v:'שמפו תינוקות 400 מ"ל — ג׳ונסון',w:'400 מ"ל',note:'עדין',prices:{hazi:19.9,osher:20.5,yesh:18.9,shufersal:21.0,yeinot:20.0}},
+  ]},
+  {id:71,name:'סבון רחצה',emoji:'🧼',cat:'היגיינה',variants:[
+    {v:'ג׳ל דאב 400 מ"ל',w:'400 מ"ל',note:'לחות',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'ג׳ל רחצה 400 מ"ל — ניוויאה',w:'400 מ"ל',note:'',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'סבון מוצק 90 גר × 4',w:'4 יח׳',note:'קלאסי',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'סבון ידיים 250 מ"ל — ספלון',w:'250 מ"ל',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+  ]},
+  {id:72,name:'נייר טואלט',emoji:'🧻',cat:'היגיינה',variants:[
+    {v:'נייר טואלט 10 גלילות — 2 שכבות',w:'10 גלילות',note:'',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'נייר טואלט 20 גלילות — 2 שכבות',w:'20 גלילות',note:'',prices:{hazi:24.9,osher:25.9,yesh:23.9,shufersal:26.9,yeinot:24.5}},
+    {v:'נייר טואלט 32 גלילות — 2 שכבות',w:'32 גלילות',note:'',prices:{hazi:34.9,osher:36.5,yesh:33.9,shufersal:37.9,yeinot:35.5}},
+    {v:'נייר טואלט 36 גלילות — 2 שכבות',w:'36 גלילות',note:'פופולרי',prices:{hazi:38.9,osher:40.5,yesh:37.9,shufersal:42.0,yeinot:39.5}},
+    {v:'נייר טואלט 40 גלילות — 2 שכבות',w:'40 גלילות',note:'',prices:{hazi:42.9,osher:44.5,yesh:41.9,shufersal:46.0,yeinot:43.5}},
+    {v:'נייר טואלט 48 גלילות — 2 שכבות',w:'48 גלילות',note:'הכי כלכלי',prices:{hazi:48.9,osher:51.0,yesh:47.9,shufersal:53.0,yeinot:49.5}},
+    {v:'נייר טואלט 32 גלילות — 3 שכבות',w:'32 גלילות',note:'רך ועבה',prices:{hazi:44.9,osher:46.5,yesh:43.9,shufersal:48.0,yeinot:45.5}},
+  ]},
+  {id:73,name:'מגבונים לחים',emoji:'🧻',cat:'היגיינה',variants:[
+    {v:'מגבונים תינוק 72 יח׳ — חגי',w:'72 יח׳',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'מגבונים כלליים 60 יח׳',w:'60 יח׳',note:'',prices:{hazi:7.9,osher:8.2,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+    {v:'מגבוני מטבח 50 יח׳',w:'50 יח׳',note:'למשטחים',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+  ]},
+  {id:74,name:'דאודורנט',emoji:'🌿',cat:'היגיינה',variants:[
+    {v:'ניוויאה ספריי גברים 150 מ"ל',w:'150 מ"ל',note:'',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'ניוויאה ספריי נשים 150 מ"ל',w:'150 מ"ל',note:'',prices:{hazi:14.9,osher:15.5,yesh:13.9,shufersal:15.9,yeinot:14.5}},
+    {v:'דאב רול-און 50 מ"ל',w:'50 מ"ל',note:'',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.9,yeinot:13.0}},
+  ]},
+  {id:75,name:'משחת שיניים',emoji:'🪥',cat:'היגיינה',variants:[
+    {v:'קולגייט 75 מ"ל',w:'75 מ"ל',note:'',prices:{hazi:8.9,osher:9.2,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'קולגייט 3 יח׳',w:'3×75 מ"ל',note:'חיסכון',prices:{hazi:22.9,osher:23.5,yesh:21.9,shufersal:24.0,yeinot:22.5}},
+    {v:'אורל-בי 75 מ"ל',w:'75 מ"ל',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+    {v:'חוט דנטלי — אורל-בי',w:'50 מ',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.5,yeinot:10.0}},
+  ]},
+  // ===== רטבים ותבלינים =====
+  {id:76,name:'קטשופ',emoji:'🍅',cat:'שימורים',variants:[
+    {v:'קטשופ 750 גר — אסם',w:'750 גר',note:'קלאסי',prices:{hazi:10.8,osher:12.9,yesh:10.5,shufersal:12.5,yeinot:11.9}},
+    {v:'קטשופ 330 גר — אסם',w:'330 גר',note:'',prices:{hazi:7.9,osher:8.9,yesh:7.5,shufersal:8.5,yeinot:8.2}},
+    {v:'קטשופ לחיץ 500 גר — הייינץ',w:'500 גר',note:'',prices:{hazi:14.9,osher:15.9,yesh:13.9,shufersal:15.5,yeinot:14.5}},
+  ]},
+  {id:77,name:'מיונז',emoji:'🥣',cat:'שימורים',variants:[
+    {v:'מיונז 430 גר — מנה מאסטר שף',w:'430 גר',note:'',prices:{hazi:14.9,osher:16.2,yesh:13.9,shufersal:15.5,yeinot:14.5}},
+    {v:'מיונז לחיץ 435 גר — מנה מאסטר שף',w:'435 גר',note:'נוח לשימוש',prices:{hazi:16.2,osher:17.5,yesh:15.5,shufersal:16.9,yeinot:15.9}},
+    {v:'מיונז לייט 430 גר',w:'430 גר',note:'דלת שומן',prices:{hazi:15.9,osher:16.9,yesh:14.9,shufersal:16.5,yeinot:15.5}},
+  ]},
+  {id:78,name:'רוטב עגבניות מרוכז',emoji:'🍅',cat:'שימורים',variants:[
+    {v:'רוטב עגבניות מרוכז 100 גר — פריניר',w:'100 גר',note:'8 ב-12',prices:{hazi:1.5,osher:2.4,yesh:1.4,shufersal:2.0,yeinot:1.8}},
+    {v:'רוטב עגבניות מרוכז 240 גר — יכין',w:'240 גר',note:'',prices:{hazi:3.9,osher:4.5,yesh:3.7,shufersal:4.2,yeinot:4.0}},
+    {v:'צ׳ילי מתוק 250 מ"ל — אסם',w:'250 מ"ל',note:'',prices:{hazi:10.2,osher:11.5,yesh:9.9,shufersal:10.9,yeinot:10.5}},
+  ]},
+  {id:79,name:'מלפפונים חמוצים',emoji:'🥒',cat:'שימורים',variants:[
+    {v:'מלפפונים חמוצים בינוניים 320 גר — בית השיטה',w:'320 גר',note:'',prices:{hazi:9.6,osher:10.5,yesh:9.2,shufersal:10.0,yeinot:9.8}},
+    {v:'מלפפונים חמוצים קטנים 320 גר — בית השיטה',w:'320 גר',note:'קורנישון',prices:{hazi:10.5,osher:11.5,yesh:10.0,shufersal:11.0,yeinot:10.8}},
+    {v:'מלפפונים חמוצים 720 גר — בית השיטה',w:'720 גר',note:'גדול',prices:{hazi:16.9,osher:18.5,yesh:15.9,shufersal:17.5,yeinot:16.5}},
+  ]},
+  {id:80,name:'מרק אבקה',emoji:'🍲',cat:'שימורים',variants:[
+    {v:'מרק עוף זך 400 גר — אסם',w:'400 גר',note:'כשל"פ',prices:{hazi:17.2,osher:18.5,yesh:16.5,shufersal:17.9,yeinot:17.0}},
+    {v:'מרק בצל 400 גר — אסם',w:'400 גר',note:'',prices:{hazi:16.9,osher:18.0,yesh:15.9,shufersal:17.5,yeinot:16.5}},
+    {v:'מרק ירקות 400 גר — אסם',w:'400 גר',note:'',prices:{hazi:16.9,osher:18.0,yesh:15.9,shufersal:17.5,yeinot:16.5}},
+    {v:'קרוטונים 250 גר — אסם',w:'250 גר',note:'למרק וסלט',prices:{hazi:16.2,osher:17.5,yesh:15.5,shufersal:16.9,yeinot:15.9}},
+  ]},
+  // ===== קמח ודגנים =====
+  {id:81,name:'קוסקוס',emoji:'🍚',cat:'יבשים',variants:[
+    {v:'קוסקוס דק 350 גר — אסם',w:'350 גר',note:'מהיר הכנה',prices:{hazi:8.9,osher:9.5,yesh:8.5,shufersal:9.2,yeinot:8.8}},
+    {v:'קוסקוס בינוני 350 גר — אסם',w:'350 גר',note:'',prices:{hazi:9.0,osher:9.5,yesh:8.5,shufersal:9.2,yeinot:8.8}},
+    {v:'קוסקוס 1 ק"ג — אסם',w:'1 ק"ג',note:'כלכלי',prices:{hazi:19.9,osher:21.5,yesh:18.9,shufersal:20.5,yeinot:19.5}},
+  ]},
+  {id:82,name:'סוכרזית וממתיקים',emoji:'🍬',cat:'יבשים',variants:[
+    {v:'סוכרזית סטיוויה 120 גר',w:'120 גר',note:'טבעי',prices:{hazi:49.4,osher:52.0,yesh:47.9,shufersal:51.0,yeinot:49.0}},
+    {v:'סוכרזית טבליות 300 יח׳',w:'300 יח׳',note:'קלאסי',prices:{hazi:14.9,osher:15.9,yesh:13.9,shufersal:15.5,yeinot:14.5}},
+    {v:'סוכר קנה חום 500 גר',w:'500 גר',note:'טבעי',prices:{hazi:12.9,osher:13.5,yesh:12.5,shufersal:13.2,yeinot:12.8}},
+  ]},
+  // ===== מקפיא =====
+  {id:83,name:'בצק עלים',emoji:'🥐',cat:'קפואים',variants:[
+    {v:'בצק עלים מרודד 1 ק"ג — מעדנות',w:'1 ק"ג',note:'למאפים',prices:{hazi:24.9,osher:26.5,yesh:23.9,shufersal:25.5,yeinot:24.5}},
+    {v:'בצק עלים 500 גר',w:'500 גר',note:'',prices:{hazi:14.9,osher:15.9,yesh:13.9,shufersal:15.5,yeinot:14.5}},
+  ]},
+  {id:84,name:'מיני בורקס',emoji:'🥐',cat:'קפואים',variants:[
+    {v:'מיני בורקס גבינה 800 גר — מעדנות',w:'800 גר',note:'מוקפא',prices:{hazi:25.5,osher:27.5,yesh:24.5,shufersal:26.5,yeinot:25.5}},
+    {v:'מיני בורקס תפו"א 800 גר',w:'800 גר',note:'מוקפא',prices:{hazi:24.9,osher:26.5,yesh:23.9,shufersal:25.5,yeinot:24.5}},
+    {v:'מיני בורקס מיקס 500 גר',w:'500 גר',note:'',prices:{hazi:17.9,osher:19.5,yesh:16.9,shufersal:18.5,yeinot:17.5}},
+  ]},
+  {id:85,name:'שניצל קפוא',emoji:'🍗',cat:'קפואים',variants:[
+    {v:'שניצל תירס ללא גלוטן 664 גר — טבעול',w:'664 גר',note:'ללא גלוטן',prices:{hazi:28.9,osher:31.5,yesh:27.9,shufersal:30.5,yeinot:29.0}},
+    {v:'מיני מיני דק שומשום 500 גר — מאמא עוף',w:'500 גר',note:'',prices:{hazi:32.5,osher:34.5,yesh:31.5,shufersal:33.5,yeinot:32.0}},
+    {v:'מיני מיני דק פריך 500 גר — מאמא עוף',w:'500 גר',note:'',prices:{hazi:32.5,osher:34.5,yesh:31.5,shufersal:33.5,yeinot:32.0}},
+    {v:'שניצל עוף קפוא 700 גר',w:'700 גר',note:'',prices:{hazi:29.9,osher:32.5,yesh:28.9,shufersal:31.5,yeinot:30.0}},
+  ]},
+  {id:86,name:'פופקורן מיקרוגל',emoji:'🍿',cat:'קפואים',variants:[
+    {v:'פופקורן מיקרוגל מלוח 600 גר — הוטפופ',w:'600 גר',note:'3 שקיות',prices:{hazi:14.8,osher:15.9,yesh:13.9,shufersal:15.5,yeinot:14.5}},
+    {v:'פופקורן מיקרוגל 100 קל׳ 160 גר — הוטפופ',w:'160 גר',note:'דיאט',prices:{hazi:14.8,osher:15.9,yesh:13.9,shufersal:15.5,yeinot:14.5}},
+    {v:'פופקורן מיקרוגל חמאה 600 גר',w:'600 גר',note:'',prices:{hazi:15.9,osher:16.9,yesh:14.9,shufersal:16.5,yeinot:15.5}},
+  ]},
+  // ===== בשר נוסף =====
+  {id:87,name:'סלמי ונקניק פרוס',emoji:'🥩',cat:'בשר',variants:[
+    {v:'סלמי איטלקי 120 גר — טיב טירת צבי',w:'120 גר',note:'',prices:{hazi:18.2,osher:19.5,yesh:17.5,shufersal:18.9,yeinot:18.0}},
+    {v:'נקניקיות ביס 380 גר — יחיעם',w:'380 גר',note:'',prices:{hazi:13.9,osher:14.9,yesh:13.2,shufersal:14.5,yeinot:13.5}},
+    {v:'נקניקיות ביס פרגיות 380 גר — יחיעם',w:'380 גר',note:'',prices:{hazi:17.9,osher:19.0,yesh:16.9,shufersal:18.5,yeinot:17.5}},
+    {v:'נקניקיות עוף 1 ק"ג — טיב טירת צבי',w:'1 ק"ג',note:'כלכלי',prices:{hazi:29.4,osher:31.5,yesh:28.5,shufersal:30.5,yeinot:29.0}},
+  ]},
+  // ===== משקאות נוסף =====
+  {id:88,name:'שוופס ופיוז טי',emoji:'🥤',cat:'משקאות',variants:[
+    {v:'שוופס מוחיטו נו שוגר 1.5 ל',w:'1.5 ל',note:'',prices:{hazi:6.3,osher:7.2,yesh:5.9,shufersal:6.9,yeinot:6.5}},
+    {v:'שוופס אשכולית 1.5 ל',w:'1.5 ל',note:'',prices:{hazi:6.9,osher:7.5,yesh:6.5,shufersal:7.2,yeinot:6.8}},
+    {v:'פיוז טי אפרסק 1.5 ל',w:'1.5 ל',note:'תה קר',prices:{hazi:6.5,osher:7.2,yesh:5.9,shufersal:6.9,yeinot:6.5}},
+    {v:'פיוז טי לימון 1.5 ל',w:'1.5 ל',note:'תה קר',prices:{hazi:6.5,osher:7.2,yesh:5.9,shufersal:6.9,yeinot:6.5}},
+    {v:'נורדיק מיסט תפוח אפרסק 4×1 ל',w:'4 ל',note:'',prices:{hazi:15.1,osher:16.5,yesh:14.5,shufersal:15.9,yeinot:15.0}},
+  ]},
+  // ===== מוצרי חלב נוסף =====
+  {id:89,name:'סקי גבינה לבנה',emoji:'🫙',cat:'חלב',variants:[
+    {v:'סקי גבינה לבנה 5% 750 גר — שטראוס',w:'750 גר',note:'גדול',prices:{hazi:17.4,osher:18.5,yesh:16.5,shufersal:17.9,yeinot:17.0}},
+    {v:'סקי גבינה לבנה 5% 250 גר — שטראוס',w:'250 גר',note:'',prices:{hazi:6.9,osher:7.5,yesh:6.5,shufersal:7.2,yeinot:6.8}},
+    {v:'אלפרו בריסטה שקדים 1 ל — שטראוס',w:'1 ל',note:'חלב שקדים',prices:{hazi:17.2,osher:18.5,yesh:16.5,shufersal:17.9,yeinot:17.0}},
+  ]},
+  // ===== חד פעמי =====
+  {id:90,name:'כלים חד פעמיים',emoji:'🥤',cat:'ניקיון',variants:[
+    {v:'כוסות שתיה קרה 150 יח׳ — רמי לוי',w:'150 יח׳',note:'',prices:{hazi:10.9,osher:12.5,yesh:10.5,shufersal:11.9,yeinot:11.0}},
+    {v:'כוסות נייר חמה 40 יח׳',w:'40 יח׳',note:'לקפה',prices:{hazi:5.9,osher:6.9,yesh:5.5,shufersal:6.5,yeinot:6.0}},
+    {v:'צלחות חד פעמי 10 יח׳',w:'10 יח׳',note:'',prices:{hazi:8.9,osher:9.9,yesh:8.5,shufersal:9.5,yeinot:9.0}},
+    {v:'כפות/מזלגות סט 24 יח׳',w:'24 יח׳',note:'',prices:{hazi:7.9,osher:8.9,yesh:7.5,shufersal:8.5,yeinot:8.0}},
+  ]},
+  // ===== ניקיון נוסף =====
+  {id:91,name:'מטליות לחות ניקוי',emoji:'🧹',cat:'ניקיון',variants:[
+    {v:'מטליות לחות 99.9% 466 גר — סנו',w:'466 גר',note:'חיטוי יסודי',prices:{hazi:20.5,osher:22.5,yesh:19.5,shufersal:21.5,yeinot:20.5}},
+    {v:'מטליות ניקוי רצפה 10 יח׳ — ניקול',w:'10 יח׳',note:'עם ריח מרכך',prices:{hazi:11.2,osher:12.5,yesh:10.9,shufersal:11.9,yeinot:11.5}},
+    {v:'מגבות הפלא שישייה — סנו סושי',w:'6 גלילות',note:'2 ב-22',prices:{hazi:11.0,osher:12.9,yesh:10.5,shufersal:12.5,yeinot:11.5}},
+    {v:'ספוג הפלא EXTRA 6 יח׳ — סנו סושי',w:'6 יח׳',note:'עם שכבה ירוקה',prices:{hazi:10.0,osher:11.5,yesh:9.5,shufersal:10.9,yeinot:10.0}},
+  ]},
+  // ===== חטיפים נוסף =====
+  {id:92,name:'בייגלה ומלוחים',emoji:'🥨',cat:'חטיפים',variants:[
+    {v:'בייגלה טבעות מלח 400 גר — אסם',w:'400 גר',note:'קלאסי',prices:{hazi:11.1,osher:12.5,yesh:10.5,shufersal:11.9,yeinot:11.0}},
+    {v:'בייגלה שומשום 200 גר',w:'200 גר',note:'',prices:{hazi:9.9,osher:10.9,yesh:9.5,shufersal:10.5,yeinot:9.9}},
+    {v:'חטיפי תירס 19 גר — טבעול',w:'19 גר',note:'קטן לילדים',prices:{hazi:2.5,osher:2.9,yesh:2.4,shufersal:2.8,yeinot:2.6}},
+    {v:'פיטנס THIN כפרי 140 גר — נסטלה',w:'140 גר',note:'דיאט',prices:{hazi:12.4,osher:13.5,yesh:11.9,shufersal:12.9,yeinot:12.5}},
+  ]},
+  // ===== תבלינים =====
+  {id:93,name:'מלח ופלפל',emoji:'🧂',cat:'תבלינים',variants:[
+    {v:'מלח שולחן 1 ק"ג',w:'1 ק"ג',note:'',prices:{hazi:3.9,osher:4.2,yesh:3.7,shufersal:4.0,yeinot:3.8}},
+    {v:'מלח גס 1 ק"ג',w:'1 ק"ג',note:'לבישול',prices:{hazi:4.9,osher:5.2,yesh:4.7,shufersal:5.0,yeinot:4.8}},
+    {v:'פלפל שחור טחון 50 גר',w:'50 גר',note:'',prices:{hazi:7.9,osher:8.5,yesh:7.5,shufersal:8.2,yeinot:7.8}},
+    {v:'פלפל שחור גרוס 50 גר',w:'50 גר',note:'',prices:{hazi:8.9,osher:9.5,yesh:8.5,shufersal:9.2,yeinot:8.8}},
+    {v:'מלח ים דק 500 גר',w:'500 גר',note:'איכותי',prices:{hazi:5.9,osher:6.5,yesh:5.5,shufersal:6.2,yeinot:5.8}},
+  ]},
+  {id:94,name:'תבלינים',emoji:'🌶️',cat:'תבלינים',variants:[
+    {v:'פפריקה מתוקה 50 גר — אסם',w:'50 גר',note:'',prices:{hazi:6.9,osher:7.5,yesh:6.5,shufersal:7.2,yeinot:6.8}},
+    {v:'פפריקה חריפה 50 גר — אסם',w:'50 גר',note:'',prices:{hazi:6.9,osher:7.5,yesh:6.5,shufersal:7.2,yeinot:6.8}},
+    {v:'כמון 50 גר — אסם',w:'50 גר',note:'',prices:{hazi:6.9,osher:7.5,yesh:6.5,shufersal:7.2,yeinot:6.8}},
+    {v:'כורכום 50 גר — אסם',w:'50 גר',note:'',prices:{hazi:6.9,osher:7.5,yesh:6.5,shufersal:7.2,yeinot:6.8}},
+    {v:'קינמון 50 גר — אסם',w:'50 גר',note:'',prices:{hazi:7.9,osher:8.5,yesh:7.5,shufersal:8.2,yeinot:7.8}},
+    {v:'שום גרנולה 50 גר',w:'50 גר',note:'',prices:{hazi:6.9,osher:7.5,yesh:6.5,shufersal:7.2,yeinot:6.8}},
+    {v:'תיבול לעוף 50 גר — אסם',w:'50 גר',note:'מעורב',prices:{hazi:7.9,osher:8.5,yesh:7.5,shufersal:8.2,yeinot:7.8}},
+    {v:'תיבול לבשר 50 גר — אסם',w:'50 גר',note:'',prices:{hazi:7.9,osher:8.5,yesh:7.5,shufersal:8.2,yeinot:7.8}},
+    {v:'שבע תבלינים 50 גר',w:'50 גר',note:'',prices:{hazi:7.9,osher:8.5,yesh:7.5,shufersal:8.2,yeinot:7.8}},
+  ]},
+  {id:95,name:'חומץ ומיץ לימון',emoji:'🍋',cat:'תבלינים',variants:[
+    {v:'חומץ לבן 750 מ"ל',w:'750 מ"ל',note:'',prices:{hazi:5.9,osher:6.5,yesh:5.5,shufersal:6.2,yeinot:5.8}},
+    {v:'חומץ תפוחים 750 מ"ל',w:'750 מ"ל',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.2,yeinot:9.8}},
+    {v:'מיץ לימון בקבוק 200 מ"ל — ויטמין',w:'200 מ"ל',note:'',prices:{hazi:5.9,osher:6.5,yesh:5.5,shufersal:6.2,yeinot:5.8}},
+    {v:'מיץ לימון 500 מ"ל',w:'500 מ"ל',note:'כלכלי',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.2,yeinot:9.8}},
+    {v:'סילאן 350 גר',w:'350 גר',note:'',prices:{hazi:12.9,osher:13.9,yesh:12.5,shufersal:13.5,yeinot:12.8}},
+  ]},
+  {id:96,name:'רוטב סויה',emoji:'🫙',cat:'תבלינים',variants:[
+    {v:'רוטב סויה 150 מ"ל — קיקומן',w:'150 מ"ל',note:'יפני',prices:{hazi:10.9,osher:11.9,yesh:10.5,shufersal:11.5,yeinot:10.8}},
+    {v:'רוטב סויה 500 מ"ל',w:'500 מ"ל',note:'',prices:{hazi:14.9,osher:15.9,yesh:13.9,shufersal:15.2,yeinot:14.5}},
+    {v:'רוטב צ׳ילי מתוק 200 מ"ל',w:'200 מ"ל',note:'',prices:{hazi:8.9,osher:9.5,yesh:8.5,shufersal:9.2,yeinot:8.8}},
+    {v:'רוטב לסלט קיסר 200 מ"ל',w:'200 מ"ל',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.2,yeinot:9.8}},
+    {v:'רוטב לסלט איטלקי 200 מ"ל',w:'200 מ"ל',note:'',prices:{hazi:9.9,osher:10.5,yesh:9.5,shufersal:10.2,yeinot:9.8}},
+  ]},
+  // ===== מזרח רחוק =====
+  {id:97,name:'מוצרי מזרח',emoji:'🍜',cat:'מזרח',variants:[
+    {v:'קרם קוקוס 400 מ"ל — מזרח ומערב',w:'400 מ"ל',note:'17-19%',prices:{hazi:7.4,osher:8.5,yesh:7.0,shufersal:8.0,yeinot:7.5}},
+    {v:'קרם קוקוס 1 ל — ללא גלוטן',w:'1 ל',note:'גדול',prices:{hazi:19.7,osher:21.5,yesh:18.9,shufersal:20.5,yeinot:19.5}},
+    {v:'חומץ אורז 500 מ"ל',w:'500 מ"ל',note:'לסושי',prices:{hazi:14.7,osher:15.9,yesh:13.9,shufersal:15.2,yeinot:14.5}},
+    {v:'רוטב מירין 500 מ"ל',w:'500 מ"ל',note:'לתיבול',prices:{hazi:17.7,osher:18.9,yesh:16.9,shufersal:18.2,yeinot:17.5}},
+    {v:'אצות מיובשות 40 גר',w:'40 גר',note:'חטיף/סושי',prices:{hazi:19.7,osher:21.5,yesh:18.9,shufersal:20.5,yeinot:19.5}},
+    {v:'פניני טפיוקה 500 גר',w:'500 גר',note:'לבובה טי',prices:{hazi:11.7,osher:12.9,yesh:10.9,shufersal:12.2,yeinot:11.5}},
+  ]},
+  {id:98,name:'נודלס ואטריות',emoji:'🍜',cat:'מזרח',variants:[
+    {v:'נודלס אורז 250 גר',w:'250 גר',note:'',prices:{hazi:9.9,osher:10.9,yesh:9.5,shufersal:10.5,yeinot:9.8}},
+    {v:'נודלס חיטה 250 גר',w:'250 גר',note:'',prices:{hazi:7.9,osher:8.9,yesh:7.5,shufersal:8.5,yeinot:7.8}},
+    {v:'מרק נודלס מיידי 65 גר — מגי',w:'65 גר',note:'',prices:{hazi:3.9,osher:4.5,yesh:3.7,shufersal:4.2,yeinot:3.9}},
+    {v:'אטריות אורז 200 גר',w:'200 גר',note:'לפד תאי',prices:{hazi:8.9,osher:9.9,yesh:8.5,shufersal:9.5,yeinot:8.8}},
+  ]},
+  // ===== גרנולה ודגנים =====
+  {id:99,name:'גרנולה ומוזלי',emoji:'🥣',cat:'יבשים',variants:[
+    {v:'גרנולה 850 גר — שקדייה',w:'850 גר',note:'קלאסי',prices:{hazi:19.7,osher:21.5,yesh:18.9,shufersal:20.5,yeinot:19.5}},
+    {v:'גרנולה אגוזים 1 ק"ג — גרין',w:'1 ק"ג',note:'',prices:{hazi:29.9,osher:31.9,yesh:28.9,shufersal:30.9,yeinot:29.5}},
+    {v:'גרנולה מייפל ופקאן 450 גר — שקד תבור',w:'450 גר',note:'פרימיום',prices:{hazi:23.3,osher:25.5,yesh:22.5,shufersal:24.5,yeinot:23.0}},
+    {v:'גרנולה חלבה 850 גר — רפאלס',w:'850 גר',note:'',prices:{hazi:21.6,osher:23.5,yesh:20.9,shufersal:22.5,yeinot:21.5}},
+    {v:'גרנולה ללא גלוטן 300 גר — נוטרה זן',w:'300 גר',note:'בריאות',prices:{hazi:25.3,osher:27.5,yesh:24.5,shufersal:26.5,yeinot:25.0}},
+    {v:'מוזלי פירות 1 ק"ג — גרין',w:'1 ק"ג',note:'',prices:{hazi:21.3,osher:23.5,yesh:20.5,shufersal:22.5,yeinot:21.0}},
+    {v:'קוואקר שיבולת שועל 500 גר',w:'500 גר',note:'',prices:{hazi:12.7,osher:13.9,yesh:12.2,shufersal:13.5,yeinot:12.5}},
+  ]},
+  // ===== פירות יבשים =====
+  {id:100,name:'פירות יבשים',emoji:'🍇',cat:'יבשים',variants:[
+    {v:'תמר מג׳הול 350 גר — רמי לוי',w:'350 גר',note:'פרימיום',prices:{hazi:10.9,osher:12.5,yesh:10.5,shufersal:11.9,yeinot:10.8}},
+    {v:'תמרים ללא גלעינים 500 גר',w:'500 גר',note:'',prices:{hazi:11.1,osher:12.5,yesh:10.5,shufersal:11.9,yeinot:10.8}},
+    {v:'צימוק בהיר 300 גר',w:'300 גר',note:'',prices:{hazi:13.9,osher:15.5,yesh:13.2,shufersal:14.9,yeinot:13.5}},
+    {v:'צימוק כהה 300 גר',w:'300 גר',note:'',prices:{hazi:13.8,osher:15.5,yesh:13.2,shufersal:14.9,yeinot:13.5}},
+    {v:'משמש מיובש 300 גר',w:'300 גר',note:'',prices:{hazi:24.9,osher:26.9,yesh:23.9,shufersal:25.9,yeinot:24.5}},
+    {v:'חמוציות מיובשות 170 גר — אושן ספריי',w:'170 גר',note:'',prices:{hazi:9.8,osher:10.9,yesh:9.5,shufersal:10.5,yeinot:9.8}},
+    {v:'מנגו מיובש 160 גר',w:'160 גר',note:'',prices:{hazi:16.9,osher:18.5,yesh:15.9,shufersal:17.5,yeinot:16.5}},
+    {v:'שזיף מיובש 300 גר',w:'300 גר',note:'',prices:{hazi:23.3,osher:25.5,yesh:22.5,shufersal:24.5,yeinot:23.0}},
+    {v:'בננה צ׳יפס 200 גר',w:'200 גר',note:'',prices:{hazi:7.3,osher:8.5,yesh:6.9,shufersal:7.9,yeinot:7.2}},
+    {v:'מיקס אגוזים ופירות יבשים 300 גר',w:'300 גר',note:'',prices:{hazi:21.2,osher:23.5,yesh:20.5,shufersal:22.5,yeinot:21.0}},
+  ]},
+  // ===== אפייה =====
+  {id:101,name:'תערובת לעוגה',emoji:'🎂',cat:'אפייה',variants:[
+    {v:'תערובת לעוגת שוקולד 450 גר — אסם',w:'450 גר',note:'',prices:{hazi:12.9,osher:13.9,yesh:12.5,shufersal:13.5,yeinot:12.8}},
+    {v:'תערובת לעוגת וניל 450 גר — אסם',w:'450 גר',note:'',prices:{hazi:12.9,osher:13.9,yesh:12.5,shufersal:13.5,yeinot:12.8}},
+    {v:'קקאו 200 גר',w:'200 גר',note:'לאפייה',prices:{hazi:14.9,osher:15.9,yesh:13.9,shufersal:15.2,yeinot:14.5}},
+    {v:'אבקת אפייה 100 גר',w:'100 גר',note:'',prices:{hazi:5.9,osher:6.5,yesh:5.5,shufersal:6.2,yeinot:5.8}},
+    {v:'וניל קשית 10 גר',w:'10 גר',note:'',prices:{hazi:4.9,osher:5.5,yesh:4.7,shufersal:5.2,yeinot:4.8}},
+    {v:'ג׳לי קלאסי 95 גר',w:'95 גר',note:'',prices:{hazi:4.9,osher:5.5,yesh:4.7,shufersal:5.2,yeinot:4.8}},
+  ]},
+  {id:102,name:'טורטייה ולאפה',emoji:'🫓',cat:'אפייה',variants:[
+    {v:'טורטייה חיטה 700 גר',w:'700 גר',note:'משפחתי',prices:{hazi:12.3,osher:13.5,yesh:11.9,shufersal:12.9,yeinot:12.0}},
+    {v:'טורטייה 450 גר',w:'450 גר',note:'',prices:{hazi:8.5,osher:9.5,yesh:7.9,shufersal:9.0,yeinot:8.2}},
+    {v:'עלי טורטייה חיטה ודגנים 320 גר — מאסטר שף',w:'320 גר',note:'',prices:{hazi:9.6,osher:10.5,yesh:9.2,shufersal:10.0,yeinot:9.5}},
+    {v:'לאפה 6 יח׳',w:'6 יח׳',note:'ישראלי',prices:{hazi:7.9,osher:8.9,yesh:7.5,shufersal:8.5,yeinot:7.8}},
+  ]},
+  // ===== חלב נוסף =====
+  {id:103,name:'חלב דל לקטוז',emoji:'🥛',cat:'חלב',variants:[
+    {v:'חלב דל לקטוז 1 ל — תנובה',w:'1 ל',note:'',prices:{hazi:5.9,osher:6.5,yesh:5.5,shufersal:6.2,yeinot:5.8}},
+    {v:'חלב נטול לקטוז 1.5 ל — טרה',w:'1.5 ל',note:'',prices:{hazi:15.1,osher:16.5,yesh:14.5,shufersal:15.9,yeinot:14.8}},
+    {v:'חלב וניל 1 ל — תנובה',w:'1 ל',note:'',prices:{hazi:9.8,osher:10.9,yesh:9.5,shufersal:10.5,yeinot:9.8}},
+    {v:'משקה שקדים 1 ל — אלפרו',w:'1 ל',note:'חלב שקדים',prices:{hazi:17.2,osher:18.9,yesh:16.5,shufersal:17.9,yeinot:16.9}},
+    {v:'משקה שיבולת שועל 1 ל',w:'1 ל',note:'',prices:{hazi:14.9,osher:15.9,yesh:13.9,shufersal:15.2,yeinot:14.5}},
+  ]},
+  // ===== בירה ואלכוהול =====
+  {id:104,name:'בירה',emoji:'🍺',cat:'אלכוהול',variants:[
+    {v:'מכבי 500 מ"ל בקבוק',w:'500 מ"ל',note:'ישראלי',prices:{hazi:8.1,osher:9.5,yesh:7.9,shufersal:9.0,yeinot:8.5}},
+    {v:'נגב 330 מ"ל',w:'330 מ"ל',note:'ישראלי קרפט',prices:{hazi:13.7,osher:15.5,yesh:13.2,shufersal:14.9,yeinot:13.5}},
+    {v:'הוגרדן 500 מ"ל פחית',w:'500 מ"ל',note:'בלגי חיטה',prices:{hazi:12.2,osher:13.9,yesh:11.9,shufersal:12.9,yeinot:12.0}},
+    {v:'קרומבכר פילס 500 מ"ל',w:'500 מ"ל',note:'גרמני',prices:{hazi:9.6,osher:10.9,yesh:9.2,shufersal:10.5,yeinot:9.5}},
+    {v:'קרומבכר חיטה 500 מ"ל',w:'500 מ"ל',note:'גרמני חיטה',prices:{hazi:9.6,osher:10.9,yesh:9.2,shufersal:10.5,yeinot:9.5}},
+    {v:'סטארופראמן 500 מ"ל',w:'500 מ"ל',note:'צ׳כי',prices:{hazi:9.6,osher:10.9,yesh:9.2,shufersal:10.5,yeinot:9.5}},
+    {v:'גינס 440 מ"ל פחית',w:'440 מ"ל',note:'אירי שחור',prices:{hazi:15.9,osher:17.5,yesh:15.2,shufersal:16.9,yeinot:15.5}},
+    {v:'מארז מכבי 6 × 330 מ"ל',w:'6 יח׳',note:'כלכלי',prices:{hazi:39.9,osher:44.9,yesh:38.9,shufersal:43.9,yeinot:40.9}},
+  ]},
+  {id:105,name:'יין',emoji:'🍷',cat:'אלכוהול',variants:[
+    {v:'יין אדום 750 מ"ל — כרמל',w:'750 מ"ל',note:'',prices:{hazi:29.9,osher:34.9,yesh:28.9,shufersal:32.9,yeinot:29.9}},
+    {v:'יין לבן 750 מ"ל — כרמל',w:'750 מ"ל',note:'',prices:{hazi:29.9,osher:34.9,yesh:28.9,shufersal:32.9,yeinot:29.9}},
+    {v:'יין רוזה 750 מ"ל',w:'750 מ"ל',note:'',prices:{hazi:29.9,osher:34.9,yesh:28.9,shufersal:32.9,yeinot:29.9}},
+    {v:'קבה 750 מ"ל — כרמל',w:'750 מ"ל',note:'יין מבעבע',prices:{hazi:39.9,osher:44.9,yesh:37.9,shufersal:42.9,yeinot:39.9}},
+    {v:'תירוש 750 מ"ל',w:'750 מ"ל',note:'ללא אלכוהול',prices:{hazi:24.9,osher:27.9,yesh:23.9,shufersal:26.9,yeinot:24.9}},
+  ]},
+  {id:106,name:'חריפים',emoji:'🥃',cat:'אלכוהול',variants:[
+    {v:'וודקה סמירנוף 700 מ"ל',w:'700 מ"ל',note:'',prices:{hazi:69.9,osher:79.9,yesh:67.9,shufersal:74.9,yeinot:69.9}},
+    {v:'ויסקי ג׳ק דניאלס 700 מ"ל',w:'700 מ"ל',note:'',prices:{hazi:99.9,osher:109.9,yesh:97.9,shufersal:104.9,yeinot:99.9}},
+    {v:'ארק 750 מ"ל — יקב זכרון',w:'750 מ"ל',note:'ישראלי',prices:{hazi:39.9,osher:44.9,yesh:37.9,shufersal:42.9,yeinot:39.9}},
+    {v:'רם בקרדי 700 מ"ל',w:'700 מ"ל',note:'',prices:{hazi:79.9,osher:89.9,yesh:77.9,shufersal:84.9,yeinot:79.9}},
+  ]},
+  // ===== שוקולד פרימיום =====
+  {id:107,name:'שוקולד פרימיום',emoji:'🍫',cat:'חטיפים',variants:[
+    {v:'פררו רושה 200 גר',w:'200 גר',note:'',prices:{hazi:35.5,osher:38.9,yesh:33.9,shufersal:36.9,yeinot:35.0}},
+    {v:'פררו רושה 300 גר',w:'300 גר',note:'',prices:{hazi:69.8,osher:74.9,yesh:67.9,shufersal:72.9,yeinot:69.5}},
+    {v:'לינדט כדורים 200 גר',w:'200 גר',note:'',prices:{hazi:40.6,osher:44.9,yesh:38.9,shufersal:42.9,yeinot:40.0}},
+    {v:'רפאלו 150 גר',w:'150 גר',note:'',prices:{hazi:22.3,osher:24.9,yesh:21.5,shufersal:23.9,yeinot:22.0}},
+    {v:'לואקר דולומיטים 250 גר',w:'250 גר',note:'',prices:{hazi:37.5,osher:41.9,yesh:35.9,shufersal:39.9,yeinot:37.0}},
+    {v:'טופיפי 125 גר',w:'125 גר',note:'',prices:{hazi:9.8,osher:10.9,yesh:9.5,shufersal:10.5,yeinot:9.8}},
+    {v:'מרסי קוקוס 250 גר',w:'250 גר',note:'',prices:{hazi:24.6,osher:26.9,yesh:23.5,shufersal:25.9,yeinot:24.0}},
+  ]},
+  // ===== שמפו ומרכך נוסף =====
+  {id:108,name:'שמפו ומרכך נקה 7',emoji:'🧴',cat:'היגיינה',variants:[
+    {v:'שמפו נקה 7 לשיער רגיל 750 מ"ל',w:'750 מ"ל',note:'',prices:{hazi:12.2,osher:13.5,yesh:11.9,shufersal:12.9,yeinot:12.0}},
+    {v:'שמפו נקה 7 לשיער יבש 750 מ"ל',w:'750 מ"ל',note:'',prices:{hazi:12.2,osher:13.5,yesh:11.9,shufersal:12.9,yeinot:12.0}},
+    {v:'מרכך נקה 7 לשיער רגיל 750 מ"ל',w:'750 מ"ל',note:'',prices:{hazi:12.2,osher:13.5,yesh:11.9,shufersal:12.9,yeinot:12.0}},
+    {v:'מרכך נקה 7 לשיער יבש 750 מ"ל',w:'750 מ"ל',note:'',prices:{hazi:12.2,osher:13.5,yesh:11.9,shufersal:12.9,yeinot:12.0}},
+    {v:'שמפו רמי לוי 750 מ"ל — לוונדר',w:'750 מ"ל',note:'',prices:{hazi:7.9,osher:9.2,yesh:7.5,shufersal:8.9,yeinot:7.8}},
+  ]},
+  {id:109,name:'ג׳ל רחצה',emoji:'🚿',cat:'היגיינה',variants:[
+    {v:'ג׳ל רחצה פינוק 700 מ"ל',w:'700 מ"ל',note:'קלאסי',prices:{hazi:13.2,osher:14.9,yesh:12.9,shufersal:13.9,yeinot:13.0}},
+    {v:'ג׳ל רחצה נקטר פרחים 750 מ"ל — רמי לוי',w:'750 מ"ל',note:'',prices:{hazi:7.9,osher:9.2,yesh:7.5,shufersal:8.9,yeinot:7.8}},
+    {v:'ג׳ל רחצה לוונדר 750 מ"ל — רמי לוי',w:'750 מ"ל',note:'',prices:{hazi:7.9,osher:9.2,yesh:7.5,shufersal:8.9,yeinot:7.8}},
+    {v:'ג׳ל רחצה AXE בלאק 150 מ"ל',w:'150 מ"ל',note:'לגברים',prices:{hazi:12.6,osher:13.9,yesh:11.9,shufersal:12.9,yeinot:12.0}},
+  ]},
+];
+
+const STORES=[
+  {id:'hazi',name:'חצי חינם',bg:'#FED7D7'},
+  {id:'osher',name:'אושר עד',bg:'#BEE3F8'},
+  {id:'yesh',name:'יש חסד',bg:'#C6F6D5'},
+  {id:'shufersal',name:'שופרסל',bg:'#FEFCBF'},
+  {id:'yeinot',name:'יינות ביתן',bg:'#E9D8FD'},
+];
+
+const CATS=['הכל','חלב','אפייה','שימורים','ירקות','פירות','יבשים','משקאות','בשר','קפואים','חטיפים','ניקיון','היגיינה','תבלינים','מזרח','אלכוהול'];
+const ALIASES={
+  'עמק':'גבינה צהובה','פילדלפיה':'גבינת שמנת','בולגרית':'גבינה בולגרית',
+  'צפתית':'גבינה צפתית','קוטג':'קוטג׳','גד':'גבינה צהובה','סקי':'סקי גבינה לבנה',
+  'אלפרו':'חלב דל לקטוז','לקטוז':'חלב דל לקטוז',
+  'רסק':'רסק עגבניות','קטשופ':'קטשופ','מיונז':'מיונז',
+  'אקונומיקה':'אקונומיקה','זאוול':'זאוול',
+  'פיירי':'סבון כלים','אריאל':'אבקת כביסה','פרסיל':'אבקת כביסה',
+  'לנור':'מרכך כביסה','סופלן':'מרכך כביסה',
+  'ביסלי':'ביסלי ובמבה','במבה':'ביסלי ובמבה',
+  'טורקי':'קפה שחור','נס קפה':'קפה שחור',
+  'ויסוצקי':'תה','פריגת':'מיץ','נביעות':'מים',
+  'קוקה':'קולה וגזוז','ספרייט':'קולה וגזוז','פאנטה':'קולה וגזוז',
+  'שוופס':'שוופס ופיוז טי','פיוז':'שוופס ופיוז טי',
+  'טכדטמה':'טכדטמה','ספרינג':'נקטר וספרינג',
+  'שוקו':'שוקו ומשקאות חלב','מילקו':'שוקו ומשקאות חלב',
+  'רד בול':'משקאות אנרגיה','מונסטר':'משקאות אנרגיה',
+  'שניצל קפוא':'שניצל קפוא','מיני מיני':'שניצל קפוא',
+  'פופקורן':'פופקורן מיקרוגל','בורקס':'מיני בורקס','בצק עלים':'בצק עלים',
+  'נקניקיות':'נקניקיות','קבנוס':'נקניקיות','סלמי':'סלמי ונקניק פרוס',
+  'פרינגלס':'דורינטוס וצ׳יפס','דורינטוס':'דורינטוס וצ׳יפס',
+  'אוריאו':'ביסקוויטים ועוגיות','בייגלה':'בייגלה ומלוחים',
+  'נוטלה':'ממרחים','דבש':'ממרחים','טחינה':'ממרחים','סילאן':'חומץ ומיץ לימון',
+  'קרמבו':'קרמבו ועפרוני','עפרוני':'קרמבו ועפרוני',
+  'פררו':'שוקולד פרימיום','לינדט':'שוקולד פרימיום','רפאלו':'שוקולד פרימיום',
+  'לואקר':'שוקולד פרימיום','טופיפי':'שוקולד פרימיום','מרסי':'שוקולד פרימיום',
+  'קיט קט':'שוקולד מותגים','מארס':'שוקולד מותגים','סניקרס':'שוקולד מותגים',
+  'וינדקס':'נוזלי ניקוי','דאק':'נוזלי ניקוי',
+  'פיניש':'טאבס מדיח','טאבס':'טאבס מדיח',
+  'קולגייט':'משחת שיניים','אורל':'משחת שיניים',
+  'ניוויאה':'דאודורנט','דאב':'ג׳ל רחצה','פינוק':'ג׳ל רחצה','axe':'ג׳ל רחצה',
+  'נקה':'שמפו ומרכך נקה 7',
+  'אלומיניום':'נייר אלומיניום ואפייה',
+  'חלבה':'ממתקים וגומי','הריבו':'ממתקים וגומי',
+  'קוסקוס':'קוסקוס','מרק':'מרק אבקה','קרוטונים':'מרק אבקה',
+  'סוכרזית':'סוכרזית וממתיקים','סטיוויה':'סוכרזית וממתיקים',
+  'מלפפונים חמוצים':'מלפפונים חמוצים','בית השיטה':'מלפפונים חמוצים',
+  'סנו':'מטליות לחות ניקוי','ניקול':'מטליות לחות ניקוי',
+  'כוסות':'כלים חד פעמיים',
+  'מלח':'מלח ופלפל','פלפל שחור':'מלח ופלפל','פפריקה':'תבלינים',
+  'כמון':'תבלינים','כורכום':'תבלינים','קינמון':'תבלינים',
+  'סויה':'רוטב סויה','קיקומן':'רוטב סויה',
+  'קוקוס':'מוצרי מזרח','מירין':'מוצרי מזרח','אצות':'מוצרי מזרח',
+  'נודלס':'נודלס ואטריות','מגי':'נודלס ואטריות',
+  'גרנולה':'גרנולה ומוזלי','מוזלי':'גרנולה ומוזלי','קוואקר':'גרנולה ומוזלי',
+  'תמר':'פירות יבשים','צימוק':'פירות יבשים','משמש':'פירות יבשים',
+  'חמוציות':'פירות יבשים','מנגו מיובש':'פירות יבשים',
+  'קקאו':'תערובת לעוגה','ג׳לי':'תערובת לעוגה',
+  'טורטייה':'טורטייה ולאפה','לאפה':'טורטייה ולאפה',
+  'מכבי':'בירה','נגב':'בירה','הוגרדן':'בירה','קרומבכר':'בירה',
+  'יין':'יין','תירוש':'יין','קבה':'יין',
+  'וודקה':'חריפים','ויסקי':'חריפים','ארק':'חריפים',
+};
+
+
+
+// STATE
+let list = JSON.parse(localStorage.getItem('shopList')||'[]');
+let tab = 'list';
+let selCat = 'הכל';
+let catQ = '';
+let expStore = null;
+let isListening = false;
+let micTarget = 'add';
+let recognition = null;
+
+function save(){localStorage.setItem('shopList',JSON.stringify(list))}
+
+function switchTab(t,el){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  tab=t; selCat='הכל'; catQ=''; expStore=null;
+  document.getElementById('addBar').style.display=t==='list'?'flex':'none';
+  render();
+}
+
+function render(){
+  const c=document.getElementById('content');
+  if(tab==='list') renderList(c);
+  else if(tab==='catalog') renderCatalog(c);
+  else renderPrices(c);
+}
+
+function renderList(c){
+  const active=list.filter(i=>!i.checked);
+  const done=list.filter(i=>i.checked);
+  if(!list.length){c.innerHTML=`<div class="empty"><div class="empty-icon">🛒</div><h3 style="font-size:16px;color:#6C757D;margin-bottom:6px">הרשימה ריקה</h3><p style="font-size:13px;color:#ADB5BD">הוסף מוצרים בתיבה למטה<br>או בחר מהקטלוג</p></div>`;return;}
+  let h='';
+  if(active.length){h+=`<div class="slabel">לקנות · ${active.length}</div><div class="ilist">`;active.forEach(i=>h+=itemH(i));h+='</div>';}
+  if(done.length){h+=`<div class="slabel" style="margin-top:16px">נרכש · ${done.length}</div><div class="ilist">`;done.forEach(i=>h+=itemH(i));h+='</div>';}
+  c.innerHTML=h;
+}
+
+function itemH(item){
+  return `<div class="litem${item.checked?' chk':''}">
+    <button class="cbtn${item.checked?' done':''}" onclick="toggle('${item.uid}')">${item.checked?'✓':''}</button>
+    <span class="iemoji">${item.emoji}</span>
+    <div class="ibody">
+      <div class="iname">${item.name}</div>
+      ${item.detail?`<div class="idetail">${item.detail}</div>`:''}
+      <div class="qrow">
+        <button class="qbtn" onclick="chQty('${item.uid}',-1)">−</button>
+        <span class="qnum">${item.qty}</span>
+        <button class="qbtn" onclick="chQty('${item.uid}',1)">+</button>
+      </div>
+    </div>
+    <button class="delbtn" onclick="del('${item.uid}')">✕</button>
+  </div>`;
+}
+
+function renderCatalog(c){
+  let h=`<div class="search-row">
+    <input class="sinput" id="catIn" value="${catQ.replace(/"/g,'&quot;')}" placeholder="חפש מוצר..." dir="rtl" autocomplete="off" oninput="catQ=this.value;render()"/>
+    <button class="micbtn${isListening&&micTarget==='catalog'?' on':''}" onclick="startMic('catalog')">🎙️</button>
+  </div>
+  <div class="miclabel" id="catMicLbl">${isListening&&micTarget==='catalog'?'🎙 מאזין...':''}</div>
+  <div class="chips">`;
+  CATS.forEach(cat=>h+=`<div class="chip${cat===selCat?' active':''}" onclick="selCat2('${cat}')">${cat}</div>`);
+  h+=`</div><div class="cat-grid">`;
+  const q=catQ.toLowerCase();
+  const aliasMatch=Object.keys(ALIASES).find(k=>q.includes(k));
+  const qResolved=aliasMatch?ALIASES[aliasMatch].toLowerCase():q;
+  const filtered=PRODUCTS.filter(p=>(selCat==='הכל'||p.cat===selCat)&&(!q||p.name.toLowerCase().includes(qResolved)||p.name.toLowerCase().includes(q)||p.variants.some(v=>v.v.toLowerCase().includes(q)||v.note.toLowerCase().includes(q)||v.v.toLowerCase().includes(qResolved))));
+  filtered.forEach(p=>{
+    const inList=list.some(i=>i.pid===p.id);
+    const cnt=inList?list.filter(i=>i.pid===p.id).length:0;
+    h+=`<div class="pcard${inList?' inlist':''}" onclick="openVar(${p.id})">
+      <span class="pemoji">${p.emoji}</span>
+      <div class="pinfo">
+        <div class="pname">${p.name}</div>
+        <div class="pdetail">${p.variants.length} אפשרויות</div>
+        <div class="pcat">${p.cat}</div>
+      </div>
+      <span class="paddicon">${inList?`✅${cnt>1?cnt:''}`:''}</span>
+    </div>`;
+  });
+  if(!filtered.length)h+=`<div style="grid-column:1/-1;text-align:center;color:#adb5bd;padding:30px;font-size:14px">לא נמצאו מוצרים</div>`;
+  h+='</div>';
+  c.innerHTML=h;
+}
+
+function selCat2(c){selCat=c;render();}
+
+function openVar(pid){
+  const p=PRODUCTS.find(x=>x.id===pid);
+  if(!p)return;
+  document.getElementById('varTitle').textContent=p.emoji+' '+p.name;
+  const vl=document.getElementById('varList');
+  vl.innerHTML=p.variants.map((v,i)=>{
+    const inList=list.some(item=>item.pid===pid&&item.varIdx===i);
+    return `<div class="vitem${inList?' inlist':''}" onclick="addVar(${pid},${i})">
+      <span class="vemoji">${p.emoji}</span>
+      <div class="vinfo">
+        <div class="vname">${v.v}</div>
+        <div class="vdetail">${v.note||v.w}</div>
+      </div>
+      <div class="vprice">${inList?'✅ ברשימה':''}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('varOverlay').style.display='flex';
+}
+
+function addVar(pid,varIdx){
+  const p=PRODUCTS.find(x=>x.id===pid);
+  const v=p.variants[varIdx];
+  const exists=list.find(i=>i.pid===pid&&i.varIdx===varIdx);
+  if(exists){exists.qty++;save();toast(`${v.v} ×${exists.qty}`);}
+  else{list.push({uid:Date.now()+'',pid,varIdx,name:v.v,detail:v.w+(v.note?' · '+v.note:''),emoji:p.emoji,qty:1,checked:false});save();toast(`${p.name} נוסף`);}
+  closeVarBtn();render();
+}
+
+function closeVar(e){if(e.target===document.getElementById('varOverlay'))closeVarBtn();}
+function closeVarBtn(){document.getElementById('varOverlay').style.display='none';}
+
+function renderPrices(c){
+  const active=list.filter(i=>!i.checked);
+  if(!active.length){c.innerHTML=`<div class="nonelist"><div style="font-size:48px;margin-bottom:12px">💰</div><div style="font-size:16px;font-weight:600;color:#495057;margin-bottom:6px">אין מוצרים להשוואה</div><div style="font-size:13px;color:#adb5bd">הוסף מוצרים לרשימה תחילה</div></div>`;return;}
+  const totals=STORES.map(s=>{
+    let total=0,n=0;
+    active.forEach(item=>{
+      const p=PRODUCTS.find(x=>x.id===item.pid);
+      if(p&&item.varIdx!==undefined&&p.variants[item.varIdx]&&p.variants[item.varIdx].prices[s.id]){
+        total+=p.variants[item.varIdx].prices[s.id]*item.qty;n++;
+      } else if(p&&p.variants[0]&&p.variants[0].prices[s.id]){
+        total+=p.variants[0].prices[s.id]*item.qty;n++;
+      }
+    });
+    return{...s,total:Math.round(total*10)/10,n,max:active.length};
+  }).sort((a,b)=>a.total-b.total);
+  const saving=Math.round((totals[totals.length-1].total-totals[0].total)*10)/10;
+  let h='';
+  if(saving>0){h+=`<div class="saving-card"><div class="sicon">🐷</div><div><div class="slbl">חיסכון אפשרי</div><div class="samt">₪${saving}</div><div class="sdesc">${totals[0].name} מול ${totals[totals.length-1].name}</div></div></div>`;}
+  h+='<div class="storelist">';
+  totals.forEach((s,idx)=>{
+    const open=expStore===s.id;
+    h+=`<div class="stcard${idx===0?' best':''}">
+      <div class="sthead" onclick="expSt('${s.id}')">
+        <div class="stdot" style="background:${s.bg}">${idx+1}.</div>
+        <div class="stinfo"><div class="stname">${s.name}</div><div class="stsub">${s.n}/${s.max} מוצרים</div></div>
+        <div class="stprice"><div class="sttotal">₪${s.total}</div>${idx===0?'<span class="besttag">הכי זול ✓</span>':''}</div>
+      </div>`;
+    if(open){
+      h+='<div class="strows">';
+      active.forEach(item=>{
+        const p=PRODUCTS.find(x=>x.id===item.pid);
+        let price=null;
+        if(p){
+          const vi=item.varIdx!==undefined?item.varIdx:0;
+          if(p.variants[vi]&&p.variants[vi].prices[s.id])price=p.variants[vi].prices[s.id];
+        }
+        h+=`<div class="strow"><span class="rowitem">${item.emoji} ${item.name} ×${item.qty}</span>${price?`<span class="rowprice">₪${price}</span>`:'<span class="rowna">לא זמין</span>'}</div>`;
+      });
+      h+='</div>';
+    }
+    h+='</div>';
+  });
+  h+='</div>';
+  c.innerHTML=h;
+}
+
+function expSt(id){expStore=expStore===id?null:id;render();}
+
+// ACTIONS
+function toggle(uid){const i=list.find(x=>x.uid==uid);if(i){i.checked=!i.checked;save();render();}}
+function chQty(uid,d){const i=list.find(x=>x.uid==uid);if(i){i.qty=Math.max(1,i.qty+d);save();render();}}
+function del(uid){list=list.filter(x=>x.uid!=uid);save();render();}
+function clearDone(){list=list.filter(i=>!i.checked);save();render();toast('מסומנים נמחקו');}
+
+function doAdd(){
+  const inp=document.getElementById('addInput');
+  const val=inp.value.trim();
+  if(!val)return;
+  addFreeText(val);
+  inp.value='';inp.focus();
+}
+
+function addFreeText(name){
+  const q=name.toLowerCase();
+  const aliasMatch=Object.keys(ALIASES).find(k=>q.includes(k));
+  const qResolved=aliasMatch?ALIASES[aliasMatch].toLowerCase():q;
+  const found=PRODUCTS.find(p=>p.name.toLowerCase().includes(qResolved)||p.name.toLowerCase().includes(q)||p.variants.some(v=>v.v.toLowerCase().includes(q)));
+  if(found&&found.variants.length>1){openVar(found.id);return;}
+  if(found){addVar(found.id,0);return;}
+  list.push({uid:Date.now()+'',pid:null,varIdx:undefined,name,detail:'',emoji:'🛒',qty:1,checked:false});
+  save();render();toast(`${name} נוסף`);
+}
+
+document.getElementById('addInput').addEventListener('keydown',e=>{if(e.key==='Enter')doAdd();});
+
+// VOICE
+function startMic(target){
+  if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){toast('נסה Chrome');return;}
+  if(isListening){recognition&&recognition.stop();return;}
+  micTarget=target;
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recognition=new SR();recognition.lang='he-IL';recognition.interimResults=false;
+  recognition.onstart=()=>{isListening=true;document.getElementById('addMic').classList.add('on');render();};
+  recognition.onresult=e=>{
+    const text=e.results[0][0].transcript.trim();
+    if(target==='add')addFreeText(text);
+    else{catQ=text;render();}
+    toast(`שמעתי: "${text}"`);
+  };
+  recognition.onerror=()=>toast('לא הצלחתי לשמוע');
+  recognition.onend=()=>{isListening=false;document.getElementById('addMic').classList.remove('on');render();};
+  recognition.start();
+}
+
+// SHARE
+function openShare(){document.getElementById('shareOverlay').style.display='flex';}
+function closeShareEv(e){if(e.target===document.getElementById('shareOverlay'))closeShare();}
+function closeShare(){document.getElementById('shareOverlay').style.display='none';}
+function doShare(type){
+  const text='🛒 רשימת הקניות שלנו:\n'+list.filter(i=>!i.checked).map(i=>`${i.emoji} ${i.name}${i.detail?' ('+i.detail+')':''} ×${i.qty}`).join('\n');
+  if(type==='whatsapp')window.open('https://wa.me/?text='+encodeURIComponent(text));
+  else if(type==='sms')window.open('sms:?body='+encodeURIComponent(text));
+  else if(type==='native'&&navigator.share)navigator.share({title:'רשימת קניות',text});
+  else{navigator.clipboard&&navigator.clipboard.writeText(text);toast('הרשימה הועתקה!');}
+  closeShare();
+}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+// INIT
+document.getElementById('addBar').style.display='flex';
+render();
+</script>
+</body>
+</html>
